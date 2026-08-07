@@ -1,15 +1,9 @@
-import {
-  Alert,
-  Box,
-  Checkbox,
-  FormControlLabel,
-  Link,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { useState, type FormEvent } from "react";
-import { Button, InputBox } from "../components";
+import { Box, Paper, Stack, Typography } from '@mui/material';
+import { useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router';
+
+import { Button, InputBox } from '../components';
+import { loginUser } from '../utils/auth';
 
 interface LoginErrors {
   email?: string;
@@ -17,26 +11,25 @@ interface LoginErrors {
 }
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<LoginErrors>({});
-  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: LoginErrors = {};
 
     if (!email.trim()) {
-      newErrors.email = "Email address is required";
+      newErrors.email = 'Email address is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Enter a valid email address";
+      newErrors.email = 'Enter a valid email address';
     }
 
     if (!password) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (password.length < 6) {
-      newErrors.password = "Password must contain at least 6 characters";
+      newErrors.password = 'Password must contain at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -44,35 +37,29 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoginSuccess(false);
 
     if (!validateForm()) {
       return;
     }
 
-    const loginData = {
-      email,
-      password,
-      rememberMe,
-    };
+    // Later replace this with your real login API.
+    loginUser();
 
-    // Replace this with your login API call.
-    // await loginApi(loginData);
-
-    console.log("Login data:", loginData);
-    setLoginSuccess(true);
+    navigate('/dashboard', {
+      replace: true,
+    });
   };
 
   return (
     <Box
       sx={{
-        alignItems: "center",
-        backgroundColor: "#f5f7fa",
-        display: "flex",
-        justifyContent: "center",
-        minHeight: "100vh",
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #f4f7fb 0%, #e8eef8 100%)',
+        display: 'flex',
+        justifyContent: 'center',
+        minHeight: '100vh',
         padding: 2,
       }}
     >
@@ -80,36 +67,30 @@ const Login = () => {
         elevation={4}
         sx={{
           borderRadius: 3,
-          maxWidth: 420,
+          maxWidth: 430,
           padding: {
             xs: 3,
             sm: 4,
           },
-          width: "100%",
+          width: '100%',
         }}
       >
-        <Stack spacing={1} sx={{ mb: 3 }}>
-          <Typography
-            variant="h4"
-            component="h1"
-            sx={{ fontWeight: 700, textAlign: "center" }}
-          >
+        <Stack spacing={1} sx={{ mb: 4 }}>
+          <Typography color="primary" variant="h5">
+            Logistics Control Tower
+          </Typography>
+
+          <Typography component="h1" variant="h4">
             Welcome Back
           </Typography>
 
-          <Typography color="text.secondary" align="center">
-            Sign in to continue to your account
+          <Typography color="text.secondary" sx={{ textAlign: 'center' }}>
+            Enter your account details to continue
           </Typography>
         </Stack>
 
-        {loginSuccess && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            Login successful
-          </Alert>
-        )}
-
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <Stack spacing={2}>
+        <Box component="form" noValidate onSubmit={handleSubmit}>
+          <Stack spacing={2.5}>
             <InputBox
               autoComplete="email"
               error={Boolean(errors.email)}
@@ -118,8 +99,9 @@ const Login = () => {
               label="Email Address"
               onChange={(event) => {
                 setEmail(event.target.value);
-                setErrors((current) => ({
-                  ...current,
+
+                setErrors((currentErrors) => ({
+                  ...currentErrors,
                   email: undefined,
                 }));
               }}
@@ -136,8 +118,9 @@ const Login = () => {
               label="Password"
               onChange={(event) => {
                 setPassword(event.target.value);
-                setErrors((current) => ({
-                  ...current,
+
+                setErrors((currentErrors) => ({
+                  ...currentErrors,
                   password: undefined,
                 }));
               }}
@@ -146,39 +129,9 @@ const Login = () => {
               value={password}
             />
 
-            <Stack
-              direction="row"
-              sx={{ alignItems: "center", justifyContent: "space-between" }}
-            >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={rememberMe}
-                    onChange={(event) => setRememberMe(event.target.checked)}
-                  />
-                }
-                label="Remember me"
-              />
-
-              <Link href="/forgot-password" underline="hover">
-                Forgot password?
-              </Link>
-            </Stack>
-
             <Button customVariant="primary" fullWidth type="submit">
-              Loginq
+              Login
             </Button>
-
-            <Typography
-              color="text.secondary"
-              variant="body2"
-              sx={{ textAlign: "center" }}
-            >
-              Don&apos;t have an account?{" "}
-              <Link href="/register" underline="hover">
-                Create account
-              </Link>
-            </Typography>
           </Stack>
         </Box>
       </Paper>
