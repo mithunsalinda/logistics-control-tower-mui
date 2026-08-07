@@ -5,10 +5,11 @@ import Dashboard from './features/Dashboard';
 import Login from './features/Login';
 import PlaceholderPage from './features/PlaceholderPage';
 import ProtectedRoute from './routes/ProtectedRoute';
-import { isAuthenticated } from './utils/auth';
+import { useAppSelector } from './store';
 
 const HomeRedirect = () => {
-  return <Navigate replace to={isAuthenticated() ? '/dashboard' : '/login'} />;
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  return <Navigate replace to={isAuthenticated ? '/dashboard' : '/login'} />;
 };
 
 function App() {

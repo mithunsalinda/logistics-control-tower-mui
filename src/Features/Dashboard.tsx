@@ -1,53 +1,10 @@
-import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
+import { Box, Chip, CircularProgress, Paper, Stack, Typography } from '@mui/material';
 
-interface DashboardCard {
-  title: string;
-  value: string;
-  description: string;
-}
-
-const dashboardCards: DashboardCard[] = [
-  {
-    title: 'Total Shipments',
-    value: '1,248',
-    description: '12% increase this month',
-  },
-  {
-    title: 'In Transit',
-    value: '86',
-    description: 'Currently moving',
-  },
-  {
-    title: 'Delivered',
-    value: '1,105',
-    description: 'Successfully delivered',
-  },
-  {
-    title: 'Delayed',
-    value: '14',
-    description: 'Require attention',
-  },
-];
-
-const recentShipments = [
-  {
-    id: 'SHP-1001',
-    destination: 'Colombo',
-    status: 'In Transit',
-  },
-  {
-    id: 'SHP-1002',
-    destination: 'Kandy',
-    status: 'Delivered',
-  },
-  {
-    id: 'SHP-1003',
-    destination: 'Galle',
-    status: 'Pending',
-  },
-];
+import { useGetShipmentsQuery } from '../store/shipmentsApi';
 
 const Dashboard = () => {
+  const { data: shipments, isLoading, isError } = useGetShipmentsQuery();
+
   return (
     <Stack spacing={3}>
       <Box>
@@ -71,30 +28,93 @@ const Dashboard = () => {
           },
         }}
       >
-        {dashboardCards.map((card) => (
-          <Paper
-            elevation={0}
-            key={card.title}
-            sx={{
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 3,
-              padding: 3,
-            }}
-          >
-            <Typography color="text.secondary" variant="body2">
-              {card.title}
-            </Typography>
+        <Paper
+          elevation={0}
+          sx={{
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 3,
+            padding: 3,
+          }}
+        >
+          <Typography color="text.secondary" variant="body2">
+            Total Shipments
+          </Typography>
 
-            <Typography sx={{ my: 1 }} variant="h4">
-              {card.value}
-            </Typography>
+          <Typography sx={{ my: 1 }} variant="h4">
+            {shipments ? shipments.length : '—'}
+          </Typography>
 
-            <Typography color="text.secondary" variant="caption">
-              {card.description}
-            </Typography>
-          </Paper>
-        ))}
+          <Typography color="text.secondary" variant="caption">
+            Live shipment summary
+          </Typography>
+        </Paper>
+
+        <Paper
+          elevation={0}
+          sx={{
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 3,
+            padding: 3,
+          }}
+        >
+          <Typography color="text.secondary" variant="body2">
+            In Transit
+          </Typography>
+
+          <Typography sx={{ my: 1 }} variant="h4">
+            {shipments ? shipments.filter((item) => item.status === 'In Transit').length : '—'}
+          </Typography>
+
+          <Typography color="text.secondary" variant="caption">
+            Currently moving
+          </Typography>
+        </Paper>
+
+        <Paper
+          elevation={0}
+          sx={{
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 3,
+            padding: 3,
+          }}
+        >
+          <Typography color="text.secondary" variant="body2">
+            Delivered
+          </Typography>
+
+          <Typography sx={{ my: 1 }} variant="h4">
+            {shipments ? shipments.filter((item) => item.status === 'Delivered').length : '—'}
+          </Typography>
+
+          <Typography color="text.secondary" variant="caption">
+            Successfully delivered
+          </Typography>
+        </Paper>
+
+        <Paper
+          elevation={0}
+          sx={{
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 3,
+            padding: 3,
+          }}
+        >
+          <Typography color="text.secondary" variant="body2">
+            Delayed
+          </Typography>
+
+          <Typography sx={{ my: 1 }} variant="h4">
+            {shipments ? shipments.filter((item) => item.status === 'Delayed').length : '—'}
+          </Typography>
+
+          <Typography color="text.secondary" variant="caption">
+            Require attention
+          </Typography>
+        </Paper>
       </Box>
 
       <Paper
@@ -111,50 +131,60 @@ const Dashboard = () => {
       >
         <Typography variant="h6">Recent Shipments</Typography>
 
-        <Stack
-          divider={
-            <Box
-              sx={{
-                borderBottom: '1px solid',
-                borderColor: 'divider',
-              }}
-            />
-          }
-          sx={{ mt: 2 }}
-        >
-          {recentShipments.map((shipment) => (
-            <Box
-              key={shipment.id}
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                gap: 2,
-                justifyContent: 'space-between',
-                py: 2,
-              }}
-            >
-              <Box>
-                <Typography>{shipment.id}</Typography>
-
-                <Typography color="text.secondary" variant="body2">
-                  Destination: {shipment.destination}
-                </Typography>
-              </Box>
-
-              <Chip
-                color={
-                  shipment.status === 'Delivered'
-                    ? 'success'
-                    : shipment.status === 'In Transit'
-                      ? 'primary'
-                      : 'warning'
-                }
-                label={shipment.status}
-                size="small"
+        {isLoading ? (
+          <Box sx={{ display: 'grid', placeItems: 'center', minHeight: 160 }}>
+            <CircularProgress />
+          </Box>
+        ) : isError ? (
+          <Typography color="error" sx={{ mt: 2 }}>
+            Unable to load shipment data.
+          </Typography>
+        ) : (
+          <Stack
+            divider={
+              <Box
+                sx={{
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                }}
               />
-            </Box>
-          ))}
-        </Stack>
+            }
+            sx={{ mt: 2 }}
+          >
+            {shipments?.map((shipment) => (
+              <Box
+                key={shipment.id}
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  gap: 2,
+                  justifyContent: 'space-between',
+                  py: 2,
+                }}
+              >
+                <Box>
+                  <Typography>{shipment.id}</Typography>
+
+                  <Typography color="text.secondary" variant="body2">
+                    Destination: {shipment.destination}
+                  </Typography>
+                </Box>
+
+                <Chip
+                  color={
+                    shipment.status === 'Delivered'
+                      ? 'success'
+                      : shipment.status === 'In Transit'
+                        ? 'primary'
+                        : 'warning'
+                  }
+                  label={shipment.status}
+                  size="small"
+                />
+              </Box>
+            ))}
+          </Stack>
+        )}
       </Paper>
     </Stack>
   );

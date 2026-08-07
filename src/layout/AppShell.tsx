@@ -25,7 +25,8 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { useState, type ReactNode } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
-import { logoutUser } from '../utils/auth';
+import { useAppDispatch, useAppSelector } from '../store';
+import { logout } from '../store/authSlice';
 
 const drawerWidth = 250;
 
@@ -77,8 +78,12 @@ const AppShell = () => {
     setMobileDrawerOpen(false);
   };
 
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const userInitial = user?.name?.[0]?.toUpperCase() ?? 'A';
+
   const handleLogout = () => {
-    logoutUser();
+    dispatch(logout());
     navigate('/login', {
       replace: true,
     });
@@ -221,7 +226,7 @@ const AppShell = () => {
               width: 36,
             }}
           >
-            A
+            {userInitial}
           </Avatar>
         </Toolbar>
       </AppBar>
