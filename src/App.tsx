@@ -6,6 +6,7 @@ import Login from './features/Login';
 import PlaceholderPage from './features/PlaceholderPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { useAppSelector } from './store';
+import FleetAndDrivers from './features/FleetAndDrivers';
 
 const HomeRedirect = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
@@ -21,6 +22,7 @@ function App() {
         <Route element={<AppShell />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/shipments" element={<PlaceholderPage title="Shipments" />} />
+          <Route path="/fleet" element={<FleetAndDrivers />} />
           <Route path="/orders" element={<PlaceholderPage title="Orders" />} />
           <Route path="/customers" element={<PlaceholderPage title="Customers" />} />
           <Route path="/settings" element={<PlaceholderPage title="Settings" />} />

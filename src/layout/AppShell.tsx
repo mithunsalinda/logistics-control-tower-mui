@@ -46,6 +46,11 @@ const navigationItems: NavigationItem[] = [
     icon: <LocalShippingRoundedIcon />,
   },
   {
+    label: 'Fleet & Drivers',
+    path: '/fleet',
+    icon: <SettingsRoundedIcon />,
+  },
+  {
     label: 'Orders',
     path: '/orders',
     icon: <Inventory2RoundedIcon />,
