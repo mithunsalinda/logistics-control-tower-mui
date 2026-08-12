@@ -5,10 +5,6 @@ import {
   Divider,
   Drawer,
   IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Tooltip,
   Typography,
@@ -25,8 +21,10 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { useState, type ReactNode } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
+import { DrawerHeader, NavigationMenu, RegionMenu } from '../components';
 import { useAppDispatch, useAppSelector } from '../store';
 import { logout } from '../store/authSlice';
+import type { RegionCode } from '../config/regions';
 
 const drawerWidth = 250;
 
@@ -69,6 +67,7 @@ const AppShell = () => {
   const location = useLocation();
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [region, setRegion] = useState<RegionCode>('EUROPE');
 
   const currentPageTitle =
     navigationItems.find((item) => item.path === location.pathname)?.label ?? 'Dashboard';
@@ -91,71 +90,13 @@ const AppShell = () => {
 
   const drawerContent = (
     <>
-      <Toolbar
-        sx={{
-          minHeight: '72px !important',
-          px: 2.5,
-        }}
-      >
-        <Box>
-          <Typography color="primary" variant="h6">
-            Logistics
-          </Typography>
-
-          <Typography color="text.secondary" variant="caption">
-            Control Tower
-          </Typography>
-        </Box>
-      </Toolbar>
-
+      <DrawerHeader />
       <Divider />
-
-      <List
-        sx={{
-          px: 1.5,
-          py: 2,
-        }}
-      >
-        {navigationItems.map((item) => {
-          const isSelected = location.pathname === item.path;
-
-          return (
-            <ListItemButton
-              key={item.path}
-              onClick={() => handleNavigation(item.path)}
-              selected={isSelected}
-              sx={{
-                borderRadius: 2,
-                mb: 0.75,
-                minHeight: 48,
-
-                '&.Mui-selected': {
-                  backgroundColor: 'primary.main',
-                  color: 'primary.contrastText',
-
-                  '&:hover': {
-                    backgroundColor: 'primary.dark',
-                  },
-
-                  '& .MuiListItemIcon-root': {
-                    color: 'primary.contrastText',
-                  },
-                },
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 42,
-                }}
-              >
-                {item.icon}
-              </ListItemIcon>
-
-              <ListItemText primary={item.label} />
-            </ListItemButton>
-          );
-        })}
-      </List>
+      <NavigationMenu
+        items={navigationItems}
+        selectedPath={location.pathname}
+        onNavigate={handleNavigation}
+      />
     </>
   );
 
@@ -310,7 +251,7 @@ const AppShell = () => {
           }}
         />
 
-        <Outlet />
+        <Outlet context={{ region, onRegionChange: setRegion }} />
       </Box>
     </Box>
   );

@@ -1,71 +1,67 @@
-import TextField from "@mui/material/TextField";
-import type { TextFieldProps } from "@mui/material/TextField";
+import TextField from '@mui/material/TextField';
+import type { TextFieldProps } from '@mui/material/TextField';
 
-type InputBoxVariant = "primary" | "secondary" | "outlined";
+type InputBoxVariant = 'primary' | 'secondary' | 'outlined';
 
 type InputBoxProps = TextFieldProps & {
   inputVariant?: InputBoxVariant;
 };
 
-const InputBox = ({
-  inputVariant = "outlined",
-  sx,
-  ...props
-}: InputBoxProps) => {
+const InputBox = ({ inputVariant = 'outlined', sx, ...props }: InputBoxProps) => {
   const variantStyles = {
     primary: {
-      backgroundColor: "#f2f7ff",
+      backgroundColor: '#f2f7ff',
 
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderColor: "#1976d2",
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#1976d2',
         },
 
-        "&:hover fieldset": {
-          borderColor: "#115293",
+        '&:hover fieldset': {
+          borderColor: '#115293',
         },
 
-        "&.Mui-focused fieldset": {
-          borderColor: "#1976d2",
-          borderWidth: "2px",
+        '&.Mui-focused fieldset': {
+          borderColor: '#1976d2',
+          borderWidth: '2px',
         },
       },
     },
 
     secondary: {
-      backgroundColor: "#fff7ed",
+      backgroundColor: '#fff7ed',
 
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderColor: "#ed6c02",
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#ed6c02',
         },
 
-        "&:hover fieldset": {
-          borderColor: "#c45600",
+        '&:hover fieldset': {
+          borderColor: '#c45600',
         },
 
-        "&.Mui-focused fieldset": {
-          borderColor: "#ed6c02",
-          borderWidth: "2px",
+        '&.Mui-focused fieldset': {
+          borderColor: '#ed6c02',
+          borderWidth: '2px',
         },
       },
     },
 
     outlined: {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
 
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderColor: "#9e9e9e",
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#9e9e9e',
         },
 
-        "&:hover fieldset": {
-          borderColor: "#1976d2",
+        '&:hover fieldset': {
+          borderColor: '#1976d2',
         },
 
-        "&.Mui-focused fieldset": {
-          borderColor: "#1976d2",
-          borderWidth: "2px",
+        '&.Mui-focused fieldset': {
+          borderColor: '#1976d2',
+          borderWidth: '2px',
         },
       },
     },
@@ -79,8 +75,8 @@ const InputBox = ({
       size="small"
       sx={[
         {
-          "& .MuiOutlinedInput-root": {
-            borderRadius: "8px",
+          '& .MuiOutlinedInput-root': {
+            borderRadius: '8px',
           },
         },
         variantStyles[inputVariant],

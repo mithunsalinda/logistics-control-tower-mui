@@ -1,12 +1,59 @@
 import { Box, Chip, CircularProgress, Paper, Stack, Typography } from '@mui/material';
+import { useOutletContext } from 'react-router';
 
 import { useGetShipmentsQuery } from '../store/shipmentsApi';
+import RegionSelector from '../components/map/RegionSelector';
+import OperationsMap from '../components/map/OperationsMap';
+
+import type { RegionCode } from '../config/regions';
+
+interface DashboardOutletContext {
+  region: RegionCode;
+  onRegionChange: (region: RegionCode) => void;
+}
 
 const Dashboard = () => {
   const { data: shipments, isLoading, isError } = useGetShipmentsQuery();
+  const { region, onRegionChange } = useOutletContext<DashboardOutletContext>();
 
   return (
     <Stack spacing={3}>
+      <Box
+        sx={{
+          height: 'calc(100vh - 64px)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {/* Toolbar */}
+
+        <Paper
+          elevation={0}
+          sx={{
+            p: 2,
+            borderBottom: 1,
+            borderColor: 'divider',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="h6">Logistics Control Tower</Typography>
+
+            <RegionSelector region={region} onChange={onRegionChange} />
+          </Box>
+        </Paper>
+
+        {/* Map */}
+
+        <Box
+          sx={{
+            position: 'relative',
+            flex: 1,
+            minHeight: 0,
+          }}
+        >
+          <OperationsMap region={region} />
+        </Box>
+      </Box>
       <Box>
         <Typography component="h2" variant="h4">
           Welcome back
