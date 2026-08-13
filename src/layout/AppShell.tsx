@@ -25,6 +25,7 @@ import { DrawerHeader, NavigationMenu, RegionMenu } from '../components';
 import { useAppDispatch, useAppSelector } from '../store';
 import { logout } from '../store/authSlice';
 import type { RegionCode } from '../config/regions';
+import TopNavbar from './TopNavbar';
 
 const drawerWidth = 250;
 
@@ -110,86 +111,20 @@ const AppShell = () => {
       sx={{
         display: 'flex',
         minHeight: '100vh',
+        width: '100%',
+        backgroundColor: '#f5f7fb',
       }}
     >
-      <AppBar
-        elevation={0}
-        position="fixed"
-        sx={{
-          backgroundColor: 'background.paper',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-          color: 'text.primary',
-          ml: {
-            md: `${drawerWidth}px`,
-          },
-          width: {
-            md: `calc(100% - ${drawerWidth}px)`,
-          },
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}
-      >
-        <Toolbar
-          sx={{
-            minHeight: '72px !important',
-          }}
-        >
-          <IconButton
-            aria-label="Open navigation menu"
-            edge="start"
-            onClick={() => setMobileDrawerOpen(true)}
-            sx={{
-              display: {
-                xs: 'inline-flex',
-                md: 'none',
-              },
-              mr: 2,
-            }}
-          >
-            <MenuRoundedIcon />
-          </IconButton>
-
-          <Typography
-            component="h1"
-            sx={{
-              flexGrow: 1,
-            }}
-            variant="h6"
-          >
-            {currentPageTitle}
-          </Typography>
-
-          <Tooltip title="Logout">
-            <IconButton onClick={handleLogout}>
-              <LogoutRoundedIcon />
-            </IconButton>
-          </Tooltip>
-
-          <Avatar
-            sx={{
-              height: 36,
-              ml: 1,
-              width: 36,
-            }}
-          >
-            {userInitial}
-          </Avatar>
-        </Toolbar>
-      </AppBar>
-
       <Box
         component="nav"
         sx={{
-          flexShrink: {
-            md: 0,
-          },
+          flexShrink: 0,
           width: {
+            xs: 0,
             md: drawerWidth,
           },
         }}
       >
-        {/* Mobile navigation */}
-
         <Drawer
           ModalProps={{
             keepMounted: true,
@@ -202,7 +137,6 @@ const AppShell = () => {
               xs: 'block',
               md: 'none',
             },
-
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
@@ -212,8 +146,6 @@ const AppShell = () => {
           {drawerContent}
         </Drawer>
 
-        {/* Desktop navigation */}
-
         <Drawer
           open
           variant="permanent"
@@ -222,7 +154,6 @@ const AppShell = () => {
               xs: 'none',
               md: 'block',
             },
-
             '& .MuiDrawer-paper': {
               borderRight: '1px solid',
               borderColor: 'divider',
@@ -238,25 +169,27 @@ const AppShell = () => {
       <Box
         component="main"
         sx={{
-          backgroundColor: '#f5f7fb',
+          display: 'flex',
+          flexDirection: 'column',
           flexGrow: 1,
+          minWidth: 0,
           minHeight: '100vh',
-          padding: {
-            xs: 2,
-            sm: 3,
-          },
-          width: {
-            md: `calc(100% - ${drawerWidth}px)`,
-          },
         }}
       >
-        <Toolbar
+        <TopNavbar />
+        <Divider />
+        <Box
           sx={{
-            minHeight: '72px !important',
+            flexGrow: 1,
+            backgroundColor: '#f5f7fb',
+            padding: {
+              xs: 2,
+              sm: 3,
+            },
           }}
-        />
-
-        <Outlet context={{ region, onRegionChange: setRegion }} />
+        >
+          <Outlet context={{ region, onRegionChange: setRegion }} />
+        </Box>
       </Box>
     </Box>
   );
