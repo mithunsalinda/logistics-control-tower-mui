@@ -20,23 +20,18 @@ export default function OperationsHeader({
       <Box
         sx={{
           display: 'flex',
-
           flexDirection: {
             xs: 'column',
             md: 'row',
           },
-
           justifyContent: 'space-between',
-
           alignItems: {
             xs: 'flex-start',
             md: 'flex-end',
           },
         }}
       >
-        {/* LEFT SECTION */}
         <Box>
-          {/* Region */}
           <Typography
             sx={{
               color: '#009e99',
@@ -59,7 +54,6 @@ export default function OperationsHeader({
           >
             {pageName}
           </Typography>
-          {/* Description */}
           <Typography
             sx={{
               color: '#647b99',
@@ -77,8 +71,6 @@ export default function OperationsHeader({
             {desc}
           </Typography>
         </Box>
-
-        {/* RIGHT SECTION */}
         {liveUpdate && (
           <Box
             sx={{

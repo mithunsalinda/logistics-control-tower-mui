@@ -16,7 +16,9 @@ const AppShell = () => {
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [region, setRegion] = useState<RegionCode>('EUROPE');
-
+  const handleRegionChange = (newRegion: RegionCode) => {
+    setRegion(newRegion);
+  };
   const handleNavigation = (path: string) => {
     navigate(path);
     setMobileDrawerOpen(false);
@@ -104,7 +106,7 @@ const AppShell = () => {
           minHeight: '100vh',
         }}
       >
-        <TopNavbar />
+        <TopNavbar region={region} onRegionChange={handleRegionChange} />
         <Divider />
         <Box
           sx={{
@@ -116,7 +118,12 @@ const AppShell = () => {
             },
           }}
         >
-          <Outlet context={{ region, onRegionChange: setRegion }} />
+          <Outlet
+            context={{
+              region,
+              onRegionChange: handleRegionChange,
+            }}
+          />
         </Box>
       </Box>
     </Box>

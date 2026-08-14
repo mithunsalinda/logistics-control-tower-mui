@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router';
 
 import AppShell from '../layout/AppShell';
-import Dashboard from '../features/Dashboard';
+import Dashboard from '../features/dashboard/Dashboard';
 import FleetAndDrivers from '../features/FleetAndDrivers';
-import Login from '../features/Login';
+import Login from '../features/login/Login';
 import Shipments from '../features/shipments';
 import Exceptions from '../features/exceptions/Exceptions';
 import Facilities from '../features/facilities/Facilities';

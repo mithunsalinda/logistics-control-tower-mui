@@ -118,8 +118,6 @@ export default function Exceptions() {
           desc="Acknowledge, assign and resolve operational disruptions."
         />
       </Box>
-
-      {/* Search and Filter Bar */}
       <Box
         sx={{
           border: '1px solid #d9e3ed',

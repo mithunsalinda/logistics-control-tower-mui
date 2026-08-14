@@ -61,9 +61,7 @@ export default function ShipmentStats() {
     <Box
       sx={{
         width: '100%',
-
         display: 'grid',
-
         gridTemplateColumns: {
           xs: '1fr',
           sm: 'repeat(2, 1fr)',

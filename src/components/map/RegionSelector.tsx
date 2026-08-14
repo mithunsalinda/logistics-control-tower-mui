@@ -1,6 +1,7 @@
-import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
+import { FormControl } from '@mui/material';
 
 import { REGIONS, type RegionCode } from '../../config/regions';
+import BaseSelect, { type SelectOption } from '../BaseSelect';
 
 interface RegionSelectorProps {
   region: RegionCode;
@@ -8,11 +9,14 @@ interface RegionSelectorProps {
 }
 
 export default function RegionSelector({ region, onChange }: RegionSelectorProps) {
-  const handleChange = (event: SelectChangeEvent) => {
-    const selectedRegion = event.target.value as RegionCode;
+  const regionOptions: SelectOption[] = Object.values(REGIONS).map((regionItem) => ({
+    label: regionItem.name,
+    value: regionItem.id,
+  }));
 
+  const handleChange = (value: string) => {
+    const selectedRegion = value as RegionCode;
     console.log('Selected region:', selectedRegion);
-
     onChange(selectedRegion);
   };
 
@@ -21,17 +25,10 @@ export default function RegionSelector({ region, onChange }: RegionSelectorProps
       size="small"
       sx={{
         width: 220,
+        height: 36,
       }}
     >
-      <InputLabel id="region-select-label">Region</InputLabel>
-
-      <Select labelId="region-select-label" value={region} label="Region" onChange={handleChange}>
-        {Object.values(REGIONS).map((regionItem) => (
-          <MenuItem key={regionItem.id} value={regionItem.id}>
-            {regionItem.name}
-          </MenuItem>
-        ))}
-      </Select>
+      <BaseSelect value={region} options={regionOptions} onChange={handleChange} />
     </FormControl>
   );
 }
