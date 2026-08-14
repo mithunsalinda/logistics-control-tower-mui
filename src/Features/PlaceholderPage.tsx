@@ -1,29 +1,58 @@
-import { Paper, Typography } from '@mui/material';
+import { Box, Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 
 interface PlaceholderPageProps {
   title: string;
+  subtitle?: string;
 }
 
-const PlaceholderPage = ({ title }: PlaceholderPageProps) => {
+const PlaceholderPage = ({ title, subtitle }: PlaceholderPageProps) => {
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        border: '1px solid',
-        borderColor: 'divider',
-        borderRadius: 3,
-        minHeight: 300,
-        padding: 3,
-      }}
-    >
-      <Typography component="h2" variant="h4">
-        {title}
-      </Typography>
+    <Stack spacing={3}>
+      <Box>
+        <Typography variant="h4" fontWeight={700}>
+          {title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          {subtitle ?? 'Operational snapshot and management controls for this module.'}
+        </Typography>
+      </Box>
 
-      <Typography color="text.secondary" sx={{ mt: 1 }}>
-        {title} page content will be added here.
-      </Typography>
-    </Paper>
+      <Grid container spacing={2}>
+        {[
+          { label: 'Current status', value: 'Healthy', tone: 'success' },
+          { label: 'Pending actions', value: '12', tone: 'warning' },
+          { label: 'Open alerts', value: '4', tone: 'error' },
+          { label: 'Coverage', value: '96%', tone: 'info' },
+        ].map((item) => (
+          <Grid key={item.label} size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card sx={{ borderRadius: 3 }}>
+              <CardContent>
+                <Typography variant="caption" color="text.secondary">
+                  {item.label}
+                </Typography>
+                <Typography variant="h5" sx={{ mt: 1, fontWeight: 700 }}>
+                  {item.value}
+                </Typography>
+                <Chip
+                  label={item.tone}
+                  size="small"
+                  color={
+                    item.tone === 'success'
+                      ? 'success'
+                      : item.tone === 'warning'
+                        ? 'warning'
+                        : item.tone === 'error'
+                          ? 'error'
+                          : 'info'
+                  }
+                  sx={{ mt: 1.5 }}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Stack>
   );
 };
 

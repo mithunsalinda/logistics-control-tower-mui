@@ -1,37 +1,7 @@
-import { Navigate, Route, Routes } from 'react-router';
-
-import AppShell from './layout/AppShell';
-import Dashboard from './features/Dashboard';
-import Login from './features/Login';
-import PlaceholderPage from './features/PlaceholderPage';
-import ProtectedRoute from './routes/ProtectedRoute';
-import { useAppSelector } from './store';
-import FleetAndDrivers from './features/FleetAndDrivers';
-
-const HomeRedirect = () => {
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  return <Navigate replace to={isAuthenticated ? '/dashboard' : '/login'} />;
-};
+import { AppRoutes } from './app/routes';
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-
-      <Route element={<ProtectedRoute />}>
-        <Route element={<AppShell />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/shipments" element={<PlaceholderPage title="Shipments" />} />
-          <Route path="/fleet" element={<FleetAndDrivers />} />
-          <Route path="/orders" element={<PlaceholderPage title="Orders" />} />
-          <Route path="/customers" element={<PlaceholderPage title="Customers" />} />
-          <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
-        </Route>
-      </Route>
-      <Route path="/" element={<HomeRedirect />} />
-      <Route path="*" element={<HomeRedirect />} />
-    </Routes>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

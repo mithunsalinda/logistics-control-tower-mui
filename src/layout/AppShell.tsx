@@ -1,72 +1,14 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Divider, Drawer } from '@mui/material';
 
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
-import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
-import { DrawerHeader, NavigationMenu, RegionMenu } from '../components';
-import { useAppDispatch, useAppSelector } from '../store';
-import { logout } from '../store/authSlice';
+import { DrawerHeader, NavigationMenu } from '../components';
 import type { RegionCode } from '../config/regions';
+import { navigationItems } from '../shared/constants/navigation';
 import TopNavbar from './TopNavbar';
 
 const drawerWidth = 250;
-
-interface NavigationItem {
-  label: string;
-  path: string;
-  icon: ReactNode;
-}
-
-const navigationItems: NavigationItem[] = [
-  {
-    label: 'Dashboard',
-    path: '/dashboard',
-    icon: <DashboardRoundedIcon />,
-  },
-  {
-    label: 'Shipments',
-    path: '/shipments',
-    icon: <LocalShippingRoundedIcon />,
-  },
-  {
-    label: 'Fleet & Drivers',
-    path: '/fleet',
-    icon: <SettingsRoundedIcon />,
-  },
-  {
-    label: 'Orders',
-    path: '/orders',
-    icon: <Inventory2RoundedIcon />,
-  },
-  {
-    label: 'Customers',
-    path: '/customers',
-    icon: <PeopleRoundedIcon />,
-  },
-  {
-    label: 'Settings',
-    path: '/settings',
-    icon: <SettingsRoundedIcon />,
-  },
-];
 
 const AppShell = () => {
   const navigate = useNavigate();
@@ -75,23 +17,9 @@ const AppShell = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [region, setRegion] = useState<RegionCode>('EUROPE');
 
-  const currentPageTitle =
-    navigationItems.find((item) => item.path === location.pathname)?.label ?? 'Dashboard';
-
   const handleNavigation = (path: string) => {
     navigate(path);
     setMobileDrawerOpen(false);
-  };
-
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
-  const userInitial = user?.name?.[0]?.toUpperCase() ?? 'A';
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/login', {
-      replace: true,
-    });
   };
 
   const drawerContent = (
