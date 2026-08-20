@@ -282,7 +282,7 @@ function FilterBar({
             border: 'none',
             outline: 'none',
             background: 'transparent',
-            color: '#1d2b3b',
+            color: 'var(--app-text)',
             fontSize: 13,
           }}
         />
@@ -295,7 +295,7 @@ function FilterBar({
         sx={{
           height: 38,
           backgroundColor: '#ffffff',
-          color: '#1b2b40',
+          color: 'var(--app-text)',
           fontSize: 13,
           fontWeight: 800,
           '& fieldset': { borderColor: '#d5e0eb', borderRadius: '8px' },
@@ -340,7 +340,7 @@ function RoutePlanList({
         >
           <Stack direction="row" sx={{ justifyContent: 'space-between', gap: 1, mb: 0.8 }}>
             <Box>
-              <Typography sx={{ color: '#12263c', fontSize: 15, fontWeight: 900 }}>
+              <Typography sx={{ color: 'var(--app-text)', fontSize: 15, fontWeight: 900 }}>
                 {plan.shipmentId}
               </Typography>
               <Typography sx={{ color: '#63758c', fontSize: 11, fontWeight: 700 }}>
@@ -390,7 +390,7 @@ function SelectedPlanHeader({
           <Typography sx={{ color: '#159d95', fontSize: 11, fontWeight: 900, letterSpacing: 1.8 }}>
             SELECTED SHIPMENT
           </Typography>
-          <Typography sx={{ color: '#10243a', fontSize: 24, fontWeight: 900 }}>
+          <Typography sx={{ color: 'var(--app-text)', fontSize: 24, fontWeight: 900 }}>
             {plan.shipmentId} - {plan.origin} to {plan.destination}
           </Typography>
           <Typography sx={{ color: '#5d7088', fontSize: 13 }}>
@@ -420,7 +420,7 @@ function RouteInspector({ route, title }: { route: RouteOption; title: string })
       <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
         <Box>
           <Typography sx={sectionEyebrowSx}>{title}</Typography>
-          <Typography sx={{ color: '#10243a', fontSize: 20, fontWeight: 900 }}>{route.label}</Typography>
+          <Typography sx={{ color: 'var(--app-text)', fontSize: 20, fontWeight: 900 }}>{route.label}</Typography>
         </Box>
         <RouteScore route={route} />
       </Stack>
@@ -492,7 +492,7 @@ function RouteSchematic({ route }: { route: RouteOption }) {
             </Box>
             <Typography
               sx={{
-                color: '#10243a',
+                color: 'var(--app-text)',
                 fontSize: 12,
                 fontWeight: 900,
                 mt: 0.8,
@@ -554,7 +554,7 @@ function RouteTimeline({ stops }: { stops: RouteStop[] }) {
             </Box>
             <Chip size="small" label={stop.status} sx={smallChipSx(getStopColor(stop.status))} />
           </Stack>
-          <Typography sx={{ color: '#10243a', fontSize: 14, fontWeight: 900, mt: 1 }}>
+          <Typography sx={{ color: 'var(--app-text)', fontSize: 14, fontWeight: 900, mt: 1 }}>
             {stop.name}
           </Typography>
           <Typography sx={{ color: '#64758a', fontSize: 11, fontWeight: 700 }}>
@@ -563,7 +563,7 @@ function RouteTimeline({ stops }: { stops: RouteStop[] }) {
           <Typography sx={{ color: '#64758a', fontSize: 11, mt: 1 }}>
             Planned {formatDateTime(stop.plannedArrival)}
           </Typography>
-          <Typography sx={{ color: '#10243a', fontSize: 12, fontWeight: 900 }}>
+          <Typography sx={{ color: 'var(--app-text)', fontSize: 12, fontWeight: 900 }}>
             ETA {formatDateTime(stop.estimatedArrival)}
           </Typography>
         </Box>
@@ -589,7 +589,7 @@ function LegRow({ leg }: { leg: RouteLeg }) {
       }}
     >
       <Box>
-        <Typography sx={{ color: '#10243a', fontSize: 13, fontWeight: 900 }}>
+        <Typography sx={{ color: 'var(--app-text)', fontSize: 13, fontWeight: 900 }}>
           {leg.from} to {leg.to}
         </Typography>
         <Typography sx={{ color: '#64758a', fontSize: 11 }}>
@@ -644,7 +644,7 @@ function CandidatePanel({
           >
             <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start', gap: 1 }}>
               <Box>
-                <Typography sx={{ color: '#10243a', fontSize: 14, fontWeight: 900 }}>
+                <Typography sx={{ color: 'var(--app-text)', fontSize: 14, fontWeight: 900 }}>
                   {option.label}
                 </Typography>
                 <Stack direction="row" spacing={0.7} sx={{ mt: 0.8, flexWrap: 'wrap', rowGap: 0.7 }}>
@@ -714,7 +714,7 @@ function ConflictPanel({ conflicts }: { conflicts: RouteConflict[] }) {
             <Box key={conflict.id} sx={{ border: '1px solid #ffd08f', borderRadius: '8px', p: 1.1 }}>
               <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                 <ErrorRoundedIcon sx={{ color: '#d66b29', fontSize: 20 }} />
-                <Typography sx={{ color: '#10243a', fontSize: 13, fontWeight: 900 }}>
+                <Typography sx={{ color: 'var(--app-text)', fontSize: 13, fontWeight: 900 }}>
                   {conflict.vehicleId} / {conflict.severity}
                 </Typography>
               </Stack>
@@ -758,7 +758,7 @@ function ComparePanel({ routes }: { routes: RouteOption[] }) {
           {routes.map((route) => (
             <Box key={route.id} sx={{ border: '1px solid #e0e8f0', borderRadius: '8px', p: 1.2 }}>
               <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
-                <Typography sx={{ color: '#10243a', fontSize: 14, fontWeight: 900 }}>
+                <Typography sx={{ color: 'var(--app-text)', fontSize: 14, fontWeight: 900 }}>
                   {route.label}
                 </Typography>
                 <Chip label={route.risk} sx={smallChipSx(getRiskColor(route.risk))} />
@@ -774,7 +774,7 @@ function ComparePanel({ routes }: { routes: RouteOption[] }) {
                 </Typography>
                 {route.stops.map((stop) => (
                   <Box key={stop.id} sx={{ borderLeft: `4px solid ${getStopColor(stop.status).main}`, pl: 1 }}>
-                    <Typography sx={{ color: '#10243a', fontSize: 12, fontWeight: 900 }}>
+                    <Typography sx={{ color: 'var(--app-text)', fontSize: 12, fontWeight: 900 }}>
                       {stop.name}
                     </Typography>
                     <Typography sx={{ color: '#64758a', fontSize: 11 }}>
@@ -788,7 +788,7 @@ function ComparePanel({ routes }: { routes: RouteOption[] }) {
                 </Typography>
                 {route.legs.map((leg) => (
                   <Box key={leg.id} sx={{ borderLeft: `4px solid ${getLegColor(leg.status).main}`, pl: 1 }}>
-                    <Typography sx={{ color: '#10243a', fontSize: 12, fontWeight: 900 }}>
+                    <Typography sx={{ color: 'var(--app-text)', fontSize: 12, fontWeight: 900 }}>
                       {leg.from} to {leg.to}
                     </Typography>
                     <Typography sx={{ color: '#64758a', fontSize: 11 }}>
@@ -812,7 +812,7 @@ function MiniMetric({ icon, label, value }: { icon: React.ReactNode; label: stri
         {icon}
         <Typography sx={{ color: '#64758a', fontSize: 10, fontWeight: 900 }}>{label}</Typography>
       </Stack>
-      <Typography sx={{ color: '#10243a', fontSize: 12, fontWeight: 900, mt: 0.4 }}>{value}</Typography>
+      <Typography sx={{ color: 'var(--app-text)', fontSize: 12, fontWeight: 900, mt: 0.4 }}>{value}</Typography>
     </Box>
   );
 }
@@ -838,7 +838,7 @@ function EmptyState() {
         textAlign: 'center',
       }}
     >
-      <Typography sx={{ color: '#10243a', fontSize: 20, fontWeight: 900 }}>No route plans found</Typography>
+      <Typography sx={{ color: 'var(--app-text)', fontSize: 20, fontWeight: 900 }}>No route plans found</Typography>
       <Typography sx={{ color: '#63758c', fontSize: 13, mt: 0.5 }}>
         Adjust the status or search criteria for the selected region.
       </Typography>

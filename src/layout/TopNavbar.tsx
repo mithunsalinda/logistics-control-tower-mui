@@ -21,6 +21,8 @@ import {
   useGetFleetQuery,
   useGetRoutePlansQuery,
   useGlobalSearchQuery,
+  logout,
+  useAppDispatch,
   useAppSelector,
   useUpdateExceptionMutation,
   type ExceptionItem,
@@ -35,6 +37,7 @@ interface TopNavbarProps {
 
 export default function TopNavbar({ region, themeMode, onRegionChange, onThemeToggle }: TopNavbarProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const { data: exceptions = [] } = useGetExceptionsQuery(undefined, { pollingInterval: 15000 });
   const { data: fleet = [] } = useGetFleetQuery();
@@ -116,6 +119,11 @@ export default function TopNavbar({ region, themeMode, onRegionChange, onThemeTo
     }
 
     await updateException({ id: notification.source.id, status: 'Acknowledged' });
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login', { replace: true });
   };
 
   return (
@@ -417,6 +425,7 @@ export default function TopNavbar({ region, themeMode, onRegionChange, onThemeTo
 
             <IconButton
               aria-label="Logout"
+              onClick={handleLogout}
               sx={{
                 width: 16,
                 height: 16,

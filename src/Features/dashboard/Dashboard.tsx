@@ -7,6 +7,7 @@ import ActiveExceptions from '../../components/ActiveExceptions';
 import ShipmentStats from './ShipmentStats';
 import { useGetShipmentsQuery } from '../../store';
 import { getDataRegion } from '../../utils/regionFilters';
+import { dashboardStyles } from './Dashboard.styles';
 
 interface DashboardOutletContext {
   region: RegionCode;
@@ -58,26 +59,18 @@ const Dashboard = () => {
   };
 
   return (
-    <Stack spacing={3}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 1,
-          flexWrap: 'wrap',
-        }}
-      >
-        <Typography sx={{ color: '#10243a', fontSize: 18, fontWeight: 900 }}>
+    <Stack spacing={3} sx={dashboardStyles.root}>
+      <Box sx={dashboardStyles.headerRow}>
+        <Typography sx={dashboardStyles.title}>
           Personalized dashboard
         </Typography>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flexWrap: 'wrap', rowGap: 0.8 }}>
+        <Stack direction="row" spacing={1} sx={dashboardStyles.widgetControls}>
           {customizing &&
             Object.entries(widgets).map(([key, value]) => (
               <FormControlLabel
                 key={key}
                 control={<Checkbox checked={value} onChange={() => handleWidgetToggle(key as keyof typeof widgets)} />}
-                label={<Typography sx={{ color: '#52677f', fontSize: 12, fontWeight: 800 }}>{key}</Typography>}
+                label={<Typography sx={dashboardStyles.widgetLabel}>{key}</Typography>}
               />
             ))}
           <Button size="small" variant={customizing ? 'contained' : 'outlined'} onClick={customizing ? handleSaveDashboard : () => setCustomizing(true)}>
@@ -100,29 +93,22 @@ const Dashboard = () => {
         )}
         {widgets.grid && (
           <Grid size={12}>
-            <Box sx={{ border: '1px solid #d9e3ed', borderRadius: '10px', backgroundColor: '#ffffff', p: 1.6 }}>
-              <Typography sx={{ color: '#159d95', fontSize: 11, fontWeight: 900, letterSpacing: 1.4 }}>
+            <Box sx={dashboardStyles.gridWidget}>
+              <Typography sx={dashboardStyles.eyebrow}>
                 SHIPMENT GRID WIDGET
               </Typography>
-              <Stack spacing={0.8} sx={{ mt: 1 }}>
+              <Stack spacing={0.8} sx={dashboardStyles.shipmentList}>
                 {(data?.rows ?? []).map((shipment) => (
                   <Box
                     key={shipment.id}
-                    sx={{
-                      display: 'grid',
-                      gridTemplateColumns: { xs: '1fr', md: '130px 1fr 130px 100px' },
-                      gap: 1,
-                      border: '1px solid #edf1f6',
-                      borderRadius: '8px',
-                      p: 1,
-                    }}
+                    sx={dashboardStyles.shipmentRow}
                   >
-                    <Typography sx={{ color: '#159d95', fontSize: 13, fontWeight: 900 }}>{shipment.id}</Typography>
-                    <Typography sx={{ color: '#10243a', fontSize: 13, fontWeight: 800 }}>
+                    <Typography sx={dashboardStyles.shipmentId}>{shipment.id}</Typography>
+                    <Typography sx={dashboardStyles.shipmentLane}>
                       {shipment.origin} to {shipment.destination}
                     </Typography>
-                    <Typography sx={{ color: '#52677f', fontSize: 12 }}>{shipment.status}</Typography>
-                    <Typography sx={{ color: '#52677f', fontSize: 12 }}>{shipment.dynamicRisk}</Typography>
+                    <Typography sx={dashboardStyles.shipmentMeta}>{shipment.status}</Typography>
+                    <Typography sx={dashboardStyles.shipmentMeta}>{shipment.dynamicRisk}</Typography>
                   </Box>
                 ))}
               </Stack>

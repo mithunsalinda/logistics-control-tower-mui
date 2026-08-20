@@ -73,7 +73,7 @@ export default function FleetStatus() {
       <Typography
         component="h2"
         sx={{
-          color: '#071d3a',
+          color: 'var(--app-text)',
           fontSize: {
             xs: 34,
             sm: 40,
@@ -90,7 +90,7 @@ export default function FleetStatus() {
 
       <Typography
         sx={{
-          color: '#627896',
+          color: 'var(--app-text-muted)',
           fontSize: {
             xs: 16,
             md: 21,
@@ -181,7 +181,7 @@ function FleetStatCard({ value, label, icon }: FleetStatCardProps) {
       <Box>
         <Typography
           sx={{
-            color: '#061d3c',
+            color: 'var(--app-text)',
             fontSize: 29,
             fontWeight: 700,
             lineHeight: 1,

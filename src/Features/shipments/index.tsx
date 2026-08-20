@@ -441,7 +441,7 @@ function Toolbar({
             border: 'none',
             outline: 'none',
             background: 'transparent',
-            color: '#1d2b3b',
+            color: 'var(--app-text)',
             fontSize: 14,
           }}
         />
@@ -652,7 +652,7 @@ function ShipmentRow({
       )}
       {visibleColumns.lane && (
         <TableCell>
-          <Typography sx={{ color: '#1d2d3f', fontSize: 14, fontWeight: 700 }}>
+          <Typography sx={{ color: 'var(--app-text)', fontSize: 14, fontWeight: 700 }}>
             {shipment.origin}
           </Typography>
           <Typography sx={{ color: '#647b99', fontSize: 11 }}>to {shipment.destination}</Typography>
@@ -676,7 +676,7 @@ function ShipmentRow({
       )}
       {visibleColumns.orders && (
         <TableCell>
-          <Typography sx={{ color: '#1d2d3f', fontSize: 12, fontWeight: 800 }}>
+          <Typography sx={{ color: 'var(--app-text)', fontSize: 12, fontWeight: 800 }}>
             {shipment.linkedOrders.map((order) => order.id).join(', ') || 'No order'}
           </Typography>
           <Typography sx={{ color: '#647b99', fontSize: 11 }}>{shipment.containerId}</Typography>
@@ -708,7 +708,7 @@ function ShipmentDetailDrawer({
                 <Typography sx={{ color: '#0f8d81', fontSize: 12, fontWeight: 900 }}>
                   {shipment.reference}
                 </Typography>
-                <Typography sx={{ color: '#13283d', fontSize: 26, fontWeight: 900 }}>
+                <Typography sx={{ color: 'var(--app-text)', fontSize: 26, fontWeight: 900 }}>
                   {shipment.id}
                 </Typography>
                 <Typography sx={{ color: '#65788d', fontSize: 13 }}>
@@ -741,7 +741,7 @@ function ShipmentDetailDrawer({
                       p: 1.2,
                     }}
                   >
-                    <Typography sx={{ color: '#13283d', fontSize: 13, fontWeight: 900 }}>
+                    <Typography sx={{ color: 'var(--app-text)', fontSize: 13, fontWeight: 900 }}>
                       {milestone.label}
                     </Typography>
                     <Typography sx={{ color: '#65788d', fontSize: 12 }}>
@@ -756,7 +756,7 @@ function ShipmentDetailDrawer({
               <Stack spacing={1.2}>
                 {shipment.linkedOrders.map((order) => (
                   <Box key={order.id} sx={{ border: '1px solid #d9e3ed', borderRadius: '8px', p: 1.2 }}>
-                    <Typography sx={{ color: '#13283d', fontSize: 14, fontWeight: 900 }}>
+                    <Typography sx={{ color: 'var(--app-text)', fontSize: 14, fontWeight: 900 }}>
                       {order.id} - {order.poNumber}
                     </Typography>
                     <Typography sx={{ color: '#65788d', fontSize: 12, mb: 1 }}>
@@ -834,7 +834,7 @@ function FilterSelect<T extends string>({
         sx={{
           width: '100%',
           height: '100%',
-          color: '#1b2b40',
+          color: 'var(--app-text)',
           fontSize: 13,
           fontWeight: 700,
           '& .MuiSelect-select': { px: 1.3, py: 0, display: 'flex', alignItems: 'center' },

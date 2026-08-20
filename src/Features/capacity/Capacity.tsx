@@ -31,6 +31,17 @@ import {
 } from '../../store';
 import { getDataRegion } from '../../utils/regionFilters';
 import OperationsHeader from '../dashboard/OperationsHeader';
+import {
+  capacityProgressSx,
+  capacityStyles,
+  chipSx,
+  comparisonCardSx,
+  forecastCardSx,
+  metricCardSx,
+  metricValueSx,
+  scenarioOptionSx,
+  tonePalette,
+} from './Capacity.styles';
 
 const horizonOptions = [7, 14, 30] as const;
 
@@ -76,7 +87,7 @@ export default function Capacity() {
   };
 
   return (
-    <Stack spacing={3} sx={{ width: '100%' }}>
+    <Stack spacing={3} sx={capacityStyles.root}>
       <OperationsHeader
         pageName="Capacity Outlook"
         liveUpdate={false}
@@ -84,39 +95,21 @@ export default function Capacity() {
         desc={`Forecast demand against capacity by region, lane and facility in ${selectedDataRegion}.`}
       />
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(4, 1fr)' },
-          gap: 1.4,
-        }}
-      >
+      <Box sx={capacityStyles.metricsGrid}>
         <MetricCard label="Forecast records" value={isFetching ? '...' : String(regionForecasts.length)} tone="blue" />
         <MetricCard label="Shortfalls" value={String(shortfalls.length)} tone="red" />
         <MetricCard label="Surpluses" value={String(surpluses.length)} tone="green" />
         <MetricCard label="Net variance" value={`${netVariance > 0 ? '+' : ''}${netVariance}%`} tone={netVariance < 0 ? 'red' : 'green'} />
       </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 1.5,
-          flexWrap: 'wrap',
-          border: '1px solid #d9e3ed',
-          borderRadius: '10px',
-          backgroundColor: '#ffffff',
-          p: 1.4,
-        }}
-      >
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          <BarChartRounded sx={{ color: '#159d95' }} />
+      <Box sx={capacityStyles.horizonBar}>
+        <Stack direction="row" spacing={1} sx={capacityStyles.iconRow}>
+          <BarChartRounded sx={capacityStyles.iconAccent} />
           <Box>
-            <Typography sx={{ color: '#10243a', fontSize: 15, fontWeight: 900 }}>
+            <Typography sx={capacityStyles.horizonTitle}>
               Forecast horizon
             </Typography>
-            <Typography sx={{ color: '#64758a', fontSize: 12 }}>
+            <Typography sx={capacityStyles.mutedText}>
               Region is controlled from the top header.
             </Typography>
           </Box>
@@ -124,15 +117,7 @@ export default function Capacity() {
         <Select
           value={String(horizonDays)}
           onChange={(event: SelectChangeEvent) => setHorizonDays(Number(event.target.value) as (typeof horizonOptions)[number])}
-          sx={{
-            height: 38,
-            minWidth: 160,
-            backgroundColor: '#ffffff',
-            color: '#1b2b40',
-            fontSize: 13,
-            fontWeight: 800,
-            '& fieldset': { borderColor: '#d5e0eb', borderRadius: '8px' },
-          }}
+          sx={capacityStyles.horizonSelect}
         >
           {horizonOptions.map((option) => (
             <MenuItem key={option} value={String(option)}>
@@ -142,14 +127,7 @@ export default function Capacity() {
         </Select>
       </Box>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1.15fr) minmax(360px, 0.85fr)' },
-          gap: 2,
-          alignItems: 'start',
-        }}
-      >
+      <Box sx={capacityStyles.contentGrid}>
         <ForecastPanel forecasts={regionForecasts} />
         <ScenarioPanel
           comparisonRan={comparisonRan}
@@ -166,21 +144,14 @@ export default function Capacity() {
 
 function ForecastPanel({ forecasts }: { forecasts: CapacityForecast[] }) {
   return (
-    <Box
-      sx={{
-        border: '1px solid #d9e3ed',
-        borderRadius: '10px',
-        backgroundColor: '#ffffff',
-        p: 1.8,
-      }}
-    >
-      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1.5 }}>
-        <FactoryRounded sx={{ color: '#159d95' }} />
+    <Box sx={capacityStyles.panel}>
+      <Stack direction="row" spacing={1} sx={capacityStyles.panelHeader}>
+        <FactoryRounded sx={capacityStyles.iconAccent} />
         <Box>
-          <Typography sx={{ color: '#159d95', fontSize: 11, fontWeight: 900, letterSpacing: 1.4 }}>
+          <Typography sx={capacityStyles.eyebrow}>
             REGION, LANE & FACILITY
           </Typography>
-          <Typography sx={{ color: '#10243a', fontSize: 21, fontWeight: 900 }}>
+          <Typography sx={capacityStyles.panelTitle}>
             Capacity Forecast
           </Typography>
         </Box>
@@ -188,8 +159,8 @@ function ForecastPanel({ forecasts }: { forecasts: CapacityForecast[] }) {
 
       <Stack spacing={1.2}>
         {forecasts.length === 0 ? (
-          <Box sx={{ border: '1px solid #e0e8f0', borderRadius: '8px', p: 3, textAlign: 'center' }}>
-            <Typography sx={{ color: '#63758c', fontSize: 13, fontWeight: 800 }}>
+          <Box sx={capacityStyles.emptyState}>
+            <Typography sx={capacityStyles.emptyText}>
               No capacity forecasts for this region and horizon.
             </Typography>
           </Box>
@@ -207,28 +178,22 @@ function ForecastCard({ forecast }: { forecast: CapacityForecast }) {
 
   return (
     <Box
-      sx={{
-        border: `1px solid ${color.border}`,
-        borderLeft: `5px solid ${color.main}`,
-        borderRadius: '8px',
-        backgroundColor: variance < 0 ? '#fff7f7' : '#f3fbf7',
-        p: 1.4,
-      }}
+      sx={forecastCardSx(color, variance < 0)}
     >
       <Stack
         direction={{ xs: 'column', md: 'row' }}
         spacing={1}
-        sx={{ justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, mb: 1.2 }}
+        sx={capacityStyles.forecastHeader}
       >
         <Box>
-          <Typography sx={{ color: '#10243a', fontSize: 15, fontWeight: 900 }}>
+          <Typography sx={capacityStyles.forecastLane}>
             {forecast.origin} to {forecast.destination}
           </Typography>
-          <Typography sx={{ color: '#64758a', fontSize: 12, fontWeight: 700 }}>
+          <Typography sx={capacityStyles.forecastMeta}>
             {forecast.facility} / {forecast.facilityCode} / {forecast.horizonDays} days
           </Typography>
         </Box>
-        <Stack direction="row" spacing={0.7} sx={{ flexWrap: 'wrap', rowGap: 0.7 }}>
+        <Stack direction="row" spacing={0.7} sx={capacityStyles.chipRow}>
           <Chip
             icon={variance < 0 ? <TrendingDownRounded /> : <TrendingUpRounded />}
             label={variance < 0 ? `Shortfall ${Math.abs(variance)}%` : `Surplus ${variance}%`}
@@ -246,20 +211,15 @@ function ForecastCard({ forecast }: { forecast: CapacityForecast }) {
 
 function CapacityBar({ color, label, value }: { color: string; label: string; value: number }) {
   return (
-    <Box sx={{ mt: 1 }}>
-      <Stack direction="row" sx={{ justifyContent: 'space-between', mb: 0.4 }}>
-        <Typography sx={{ color: '#52677f', fontSize: 11, fontWeight: 900 }}>{label}</Typography>
-        <Typography sx={{ color: '#10243a', fontSize: 11, fontWeight: 900 }}>{value}%</Typography>
+    <Box sx={capacityStyles.barRoot}>
+      <Stack direction="row" sx={capacityStyles.barHeader}>
+        <Typography sx={capacityStyles.barLabel}>{label}</Typography>
+        <Typography sx={capacityStyles.barValue}>{value}%</Typography>
       </Stack>
       <LinearProgress
         variant="determinate"
         value={value}
-        sx={{
-          height: 10,
-          borderRadius: 999,
-          backgroundColor: '#e3ebf2',
-          '& .MuiLinearProgress-bar': { backgroundColor: color },
-        }}
+        sx={capacityProgressSx(color)}
       />
     </Box>
   );
@@ -283,20 +243,15 @@ function ScenarioPanel({
   return (
     <Stack spacing={2}>
       <Box
-        sx={{
-          border: '1px solid #d9e3ed',
-          borderRadius: '10px',
-          backgroundColor: '#ffffff',
-          p: 1.8,
-        }}
+        sx={capacityStyles.panel}
       >
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1.4 }}>
-          <SwapHorizRounded sx={{ color: '#159d95' }} />
+        <Stack direction="row" spacing={1} sx={capacityStyles.scenarioPanelHeader}>
+          <SwapHorizRounded sx={capacityStyles.iconAccent} />
           <Box>
-            <Typography sx={{ color: '#159d95', fontSize: 11, fontWeight: 900, letterSpacing: 1.4 }}>
+            <Typography sx={capacityStyles.eyebrow}>
               SERVICE RETURNED WHAT-IF OPTIONS
             </Typography>
-            <Typography sx={{ color: '#10243a', fontSize: 21, fontWeight: 900 }}>
+            <Typography sx={capacityStyles.panelTitle}>
               Scenario Selection
             </Typography>
           </Box>
@@ -308,23 +263,15 @@ function ScenarioPanel({
               key={scenario.id}
               component="button"
               onClick={() => onScenarioToggle(scenario.id)}
-              sx={{
-                width: '100%',
-                textAlign: 'left',
-                border: `1px solid ${selectedScenarioIds.includes(scenario.id) ? '#159d95' : '#d9e3ed'}`,
-                borderRadius: '8px',
-                backgroundColor: selectedScenarioIds.includes(scenario.id) ? '#eefbf9' : '#ffffff',
-                p: 1.2,
-                cursor: 'pointer',
-              }}
+              sx={scenarioOptionSx(selectedScenarioIds.includes(scenario.id))}
             >
-              <Typography sx={{ color: '#10243a', fontSize: 14, fontWeight: 900 }}>
+              <Typography sx={capacityStyles.forecastLane}>
                 {scenario.name}
               </Typography>
-              <Typography sx={{ color: '#64758a', fontSize: 12, mt: 0.5 }}>
+              <Typography sx={capacityStyles.mutedText}>
                 {scenario.description}
               </Typography>
-              <Stack direction="row" spacing={0.7} sx={{ mt: 1, flexWrap: 'wrap', rowGap: 0.7 }}>
+              <Stack direction="row" spacing={0.7} sx={capacityStyles.chipRow}>
                 <Chip size="small" label={`${scenario.horizonDays} days`} />
                 <Chip size="small" label={`+${scenario.addedCapacity}% capacity`} />
                 <Chip size="small" label={`Cost ${formatCurrency(scenario.costImpactUsd)}`} />
@@ -339,7 +286,7 @@ function ScenarioPanel({
           startIcon={<PlayArrowRounded />}
           disabled={selectedScenarios.length === 0}
           onClick={onRunComparison}
-          sx={{ mt: 1.5, py: 1.2, fontWeight: 900, borderRadius: '8px', backgroundColor: '#159d95' }}
+          sx={capacityStyles.runButton}
         >
           Run comparison
         </Button>
@@ -358,33 +305,26 @@ function ComparisonPanel({
   scenarios: CapacityScenario[];
 }) {
   return (
-    <Box
-      sx={{
-        border: '1px solid #d9e3ed',
-        borderRadius: '10px',
-        backgroundColor: '#ffffff',
-        p: 1.8,
-      }}
-    >
-      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1.2 }}>
-        <BalanceRounded sx={{ color: '#159d95' }} />
-        <Typography sx={{ color: '#10243a', fontSize: 18, fontWeight: 900 }}>
+    <Box sx={capacityStyles.panel}>
+      <Stack direction="row" spacing={1} sx={capacityStyles.comparisonHeader}>
+        <BalanceRounded sx={capacityStyles.iconAccent} />
+        <Typography sx={capacityStyles.comparisonTitle}>
           Scenario Comparison
         </Typography>
       </Stack>
 
       {!comparisonRan ? (
-        <Typography sx={{ color: '#63758c', fontSize: 13 }}>
+        <Typography sx={capacityStyles.mutedText}>
           Select one or more scenarios and run comparison.
         </Typography>
       ) : (
         <Stack spacing={1}>
           {scenarios.map((scenario) => (
-            <Box key={scenario.id} sx={{ border: '1px solid #e0e8f0', borderRadius: '8px', p: 1.2 }}>
-              <Typography sx={{ color: '#10243a', fontSize: 14, fontWeight: 900 }}>
+            <Box key={scenario.id} sx={comparisonCardSx()}>
+              <Typography sx={capacityStyles.forecastLane}>
                 {scenario.name}
               </Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 0.8, mt: 1 }}>
+              <Box sx={capacityStyles.comparisonMetricGrid}>
                 <MiniMetric label="Projected OTD" value={`${scenario.projectedOtd}%`} />
                 <MiniMetric label="Cost impact" value={formatCurrency(scenario.costImpactUsd)} />
                 <MiniMetric label="At-risk reduced" value={String(scenario.atRiskReduction)} />
@@ -400,9 +340,9 @@ function ComparisonPanel({
 
 function MiniMetric({ label, value }: { label: string; value: string }) {
   return (
-    <Box sx={{ border: '1px solid #e1eaf2', borderRadius: '8px', p: 0.9 }}>
-      <Typography sx={{ color: '#64758a', fontSize: 10, fontWeight: 900 }}>{label}</Typography>
-      <Typography sx={{ color: '#10243a', fontSize: 13, fontWeight: 900, mt: 0.3 }}>{value}</Typography>
+    <Box sx={capacityStyles.miniMetric}>
+      <Typography sx={capacityStyles.miniMetricLabel}>{label}</Typography>
+      <Typography sx={capacityStyles.miniMetricValue}>{value}</Typography>
     </Box>
   );
 }
@@ -420,16 +360,10 @@ function MetricCard({
 
   return (
     <Box
-      sx={{
-        border: `1px solid ${color.border}`,
-        borderLeft: `4px solid ${color.main}`,
-        borderRadius: '8px',
-        backgroundColor: color.bg,
-        p: 1.5,
-      }}
+      sx={metricCardSx(color)}
     >
-      <Typography sx={{ color: '#5d7088', fontSize: 12, fontWeight: 900 }}>{label}</Typography>
-      <Typography sx={{ color: color.text, fontSize: 26, fontWeight: 900 }}>{value}</Typography>
+      <Typography sx={capacityStyles.metricLabel}>{label}</Typography>
+      <Typography sx={metricValueSx(color)}>{value}</Typography>
     </Box>
   );
 }
@@ -449,20 +383,3 @@ function formatCurrency(value: number) {
     maximumFractionDigits: 0,
   }).format(value);
 }
-
-function chipSx(color: { bg: string; border: string; text: string }) {
-  return {
-    backgroundColor: color.bg,
-    border: `1px solid ${color.border}`,
-    color: color.text,
-    fontSize: 11,
-    fontWeight: 900,
-    height: 24,
-  };
-}
-
-const tonePalette = {
-  blue: { bg: '#f2f7ff', border: '#c9daf5', main: '#4b68cf', text: '#263f98' },
-  green: { bg: '#effaf5', border: '#bce6cf', main: '#2f8f6b', text: '#237155' },
-  red: { bg: '#fff0f0', border: '#ffc4c4', main: '#d74d4d', text: '#a22727' },
-};

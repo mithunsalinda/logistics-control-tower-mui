@@ -45,8 +45,8 @@ export default function OperationsHeader({
           </Typography>
           <Typography
             sx={{
-              color: '#0e0f0f',
-              fontSize: 36,
+              color: 'var(--app-text)',
+              fontSize: '1.5rem',
               fontWeight: 700,
               letterSpacing: '2.5px',
               mb: 0.5,
@@ -56,7 +56,7 @@ export default function OperationsHeader({
           </Typography>
           <Typography
             sx={{
-              color: '#647b99',
+              color: 'var(--app-text-muted)',
 
               fontSize: {
                 xs: 10,
@@ -107,14 +107,14 @@ export default function OperationsHeader({
 
             <Typography
               sx={{
-                color: '#657a96',
+                color: 'var(--app-text-muted)',
                 fontSize: 12,
                 fontWeight: 400,
               }}
             >
-            Updated just now
-            {region ? ` - ${region}` : ''}
-          </Typography>
+              Updated just now
+              {region ? ` - ${region}` : ''}
+            </Typography>
           </Box>
         )}
       </Box>

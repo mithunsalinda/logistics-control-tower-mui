@@ -545,7 +545,7 @@ function MapCommandPanel({
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <SensorsRounded sx={{ color: '#0f8d81', fontSize: 18 }} />
           <Box sx={{ minWidth: 0 }}>
-            <Typography sx={{ color: '#13283d', fontSize: 13, fontWeight: 800 }}>
+            <Typography sx={{ color: 'var(--app-text)', fontSize: 13, fontWeight: 800 }}>
               Live Geospatial Operations
             </Typography>
             <Typography sx={{ color: '#65788d', fontSize: 11 }}>
@@ -639,7 +639,7 @@ function MapPreviewPanel({ lastTelemetryTime, region, vehicleCount, onOpen }: Ma
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center', minWidth: 0 }}>
         <SensorsRounded sx={{ color: '#0f8d81', fontSize: 18 }} />
         <Box sx={{ minWidth: 0 }}>
-          <Typography sx={{ color: '#13283d', fontSize: 12, fontWeight: 900 }}>
+          <Typography sx={{ color: 'var(--app-text)', fontSize: 12, fontWeight: 900 }}>
             Live Map Preview
           </Typography>
           <Typography sx={{ color: '#65788d', fontSize: 11 }}>
@@ -716,7 +716,7 @@ function SelectedAssetPanel({ vehicle, tick, onClose }: SelectedAssetPanelProps)
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', minWidth: 0 }}>
           <RouteRounded sx={{ color: '#0f8d81', fontSize: 18 }} />
           <Box sx={{ minWidth: 0 }}>
-            <Typography sx={{ color: '#13283d', fontSize: 14, fontWeight: 900 }}>
+            <Typography sx={{ color: 'var(--app-text)', fontSize: 14, fontWeight: 900 }}>
               {vehicle.id}
             </Typography>
             <Typography sx={{ color: '#63758c', fontSize: 11 }}>
@@ -763,7 +763,7 @@ function DetailMetric({ label, value }: { label: string; value: string }) {
       <Typography sx={{ color: '#75869b', fontSize: 10, fontWeight: 700, textTransform: 'uppercase' }}>
         {label}
       </Typography>
-      <Typography sx={{ color: '#18293d', fontSize: 12, fontWeight: 700 }}>{value}</Typography>
+      <Typography sx={{ color: 'var(--app-text)', fontSize: 12, fontWeight: 700 }}>{value}</Typography>
     </Box>
   );
 }

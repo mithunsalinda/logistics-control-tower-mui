@@ -59,7 +59,7 @@ export const fleetStyles = {
   iconSmall: { fontSize: 18 },
   metricIcon: { fontSize: 15 },
   inlineSignalIcon: { color: '#52677f', fontSize: 16 },
-  vehicleTitle: { fontSize: 16, fontWeight: 900, color: '#111827' },
+  vehicleTitle: { fontSize: 16, fontWeight: 900, color: 'var(--app-text)' },
   vehicleSubtitle: { fontSize: 12, color: '#687c91', fontWeight: 600 },
   metricsGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.3, mb: 1.5 },
   healthChips: { flexWrap: 'wrap', rowGap: 0.8, mb: 1.6 },
@@ -68,7 +68,7 @@ export const fleetStyles = {
   signalRoot: { mt: 1 },
   signalHeader: { justifyContent: 'space-between', mb: 0.45 },
   signalLabel: { color: '#768aa2', fontSize: 12, fontWeight: 700 },
-  signalValue: { color: '#1b2d43', fontSize: 12, fontWeight: 800 },
+  signalValue: { color: 'var(--app-text)', fontSize: 12, fontWeight: 800 },
   signalProgress: {
     height: 6,
     borderRadius: 999,
