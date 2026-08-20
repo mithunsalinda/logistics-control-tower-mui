@@ -112,8 +112,9 @@ export default function OperationsHeader({
                 fontWeight: 400,
               }}
             >
-              Updated just now
-            </Typography>
+            Updated just now
+            {region ? ` - ${region}` : ''}
+          </Typography>
           </Box>
         )}
       </Box>

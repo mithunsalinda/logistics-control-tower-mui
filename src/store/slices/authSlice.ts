@@ -1,11 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+
 import {
   clearPersistedAuth,
   createUserFromEmail,
   getPersistedAuth,
   persistAuth,
   type AuthUser,
-} from '../utils/auth';
+} from '../../utils/auth';
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -23,6 +24,11 @@ const authSlice = createSlice({
       state.user = createUserFromEmail(action.payload.email);
       persistAuth(state);
     },
+    setCredentials(state, action: PayloadAction<AuthUser>) {
+      state.isAuthenticated = true;
+      state.user = action.payload;
+      persistAuth(state);
+    },
     logout(state) {
       state.isAuthenticated = false;
       state.user = null;
@@ -31,6 +37,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setCredentials } = authSlice.actions;
 
 export default authSlice.reducer;

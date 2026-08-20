@@ -57,7 +57,6 @@ export default function FleetStatus() {
         py: 4,
       }}
     >
-      {/* Section label */}
       <Typography
         sx={{
           color: '#009f9a',
@@ -71,7 +70,6 @@ export default function FleetStatus() {
         Fleet & Driver Management
       </Typography>
 
-      {/* Main heading */}
       <Typography
         component="h2"
         sx={{
@@ -90,7 +88,6 @@ export default function FleetStatus() {
         Fleet Status
       </Typography>
 
-      {/* Description */}
       <Typography
         sx={{
           color: '#627896',
@@ -105,7 +102,6 @@ export default function FleetStatus() {
         Live asset health, duty status and telemetry freshness.
       </Typography>
 
-      {/* Cards */}
       <Box
         sx={{
           display: 'grid',
@@ -161,7 +157,6 @@ function FleetStatCard({ value, label, icon }: FleetStatCardProps) {
         },
       }}
     >
-      {/* Icon */}
       <Box
         sx={{
           width: 46,
@@ -183,7 +178,6 @@ function FleetStatCard({ value, label, icon }: FleetStatCardProps) {
         {icon}
       </Box>
 
-      {/* Value + label */}
       <Box>
         <Typography
           sx={{

@@ -40,8 +40,8 @@ export default function BaseSelect({
         minWidth: { xs: '100%', sm: 100 },
         height: 38,
         borderRadius: '10px',
-        border: '1px solid #d4e0eb',
-        backgroundColor: '#ffffff',
+        border: '1px solid var(--app-border)',
+        backgroundColor: 'var(--app-surface)',
         display: 'flex',
         alignItems: 'center',
       }}
@@ -63,7 +63,7 @@ export default function BaseSelect({
           {
             width: '100%',
             height: '100%',
-            color: '#1c2d40',
+            color: 'var(--app-text)',
             fontSize: 14,
             fontWeight: 500,
             '& .MuiSelect-select': {
@@ -76,7 +76,7 @@ export default function BaseSelect({
               border: 'none',
             },
             '& .MuiSelect-icon': {
-              color: '#1f2d40',
+              color: 'var(--app-text)',
               right: 10,
               fontSize: 18,
             },

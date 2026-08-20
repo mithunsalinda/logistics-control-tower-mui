@@ -9,54 +9,19 @@ import {
 } from '@mui/icons-material';
 
 import { Box, Typography } from '@mui/material';
+import { useGetDashboardMetricsQuery } from '../../store';
 
-interface StatItem {
-  id: number;
-  title: string;
-  value: string;
-  description: string;
-  icon: ReactNode;
-}
-
-const stats: StatItem[] = [
-  {
-    id: 1,
-    title: 'Active shipments',
-    value: '5,000',
-    description: '+2.8% vs yesterday',
-    icon: <Inventory2Outlined />,
-  },
-  {
-    id: 2,
-    title: 'Vehicles moving',
-    value: '33',
-    description: 'Across selected region',
-    icon: <LocalShippingOutlined />,
-  },
-  {
-    id: 3,
-    title: 'At-risk shipments',
-    value: '893',
-    description: 'Requires attention',
-    icon: <WarningAmberRounded />,
-  },
-  {
-    id: 4,
-    title: 'Critical exceptions',
-    value: '0',
-    description: 'Unresolved',
-    icon: <ErrorOutlineRounded />,
-  },
-  {
-    id: 5,
-    title: 'On-time delivery',
-    value: '94.7%',
-    description: '+1.4 pts this week',
-    icon: <TrendingUpRounded />,
-  },
-];
+const statIcons: Record<string, ReactNode> = {
+  'active-shipments': <Inventory2Outlined />,
+  'vehicles-moving': <LocalShippingOutlined />,
+  'at-risk-shipments': <WarningAmberRounded />,
+  'critical-exceptions': <ErrorOutlineRounded />,
+  'on-time-delivery': <TrendingUpRounded />,
+};
 
 export default function ShipmentStats() {
+  const { data: stats = [] } = useGetDashboardMetricsQuery();
+
   return (
     <Box
       sx={{
@@ -78,7 +43,7 @@ export default function ShipmentStats() {
           title={stat.title}
           value={stat.value}
           description={stat.description}
-          icon={stat.icon}
+          icon={statIcons[stat.id] ?? <Inventory2Outlined />}
         />
       ))}
     </Box>

@@ -1,272 +1,148 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useOutletContext } from 'react-router';
 
-import SearchRounded from '@mui/icons-material/SearchRounded';
+import BatteryAlertRounded from '@mui/icons-material/BatteryAlertRounded';
+import ErrorOutlineRounded from '@mui/icons-material/ErrorOutlineRounded';
 import LocalShippingRounded from '@mui/icons-material/LocalShippingRounded';
-import KeyboardArrowDownRounded from '@mui/icons-material/KeyboardArrowDownRounded';
+import SpeedRounded from '@mui/icons-material/SpeedRounded';
+import ThermostatRounded from '@mui/icons-material/ThermostatRounded';
+import TimerRounded from '@mui/icons-material/TimerRounded';
 
 import {
   Box,
   Chip,
   LinearProgress,
-  MenuItem,
-  Select,
   Stack,
   Typography,
-  type SelectChangeEvent,
 } from '@mui/material';
 
+import { FilterSelect, SearchField } from '../../components';
+import { REGIONS, type RegionCode } from '../../config/regions';
+import { useGetFleetQuery, type Vehicle, type VehicleStatus } from '../../store';
+import { getDataRegion } from '../../utils/regionFilters';
 import OperationsHeader from '../dashboard/OperationsHeader';
+import {
+  fleetStyles,
+  healthChipSx,
+  metricRootSx,
+  metricValueRowSx,
+  metricValueSx,
+  progressBarSx,
+  statusChipSx,
+  summaryCardSx,
+  summaryValueSx,
+  vehicleCardSx,
+  type FleetSummaryTone,
+} from './FleetAndDrivers.styles';
 
-type VehicleStatus = 'In Transit' | 'Delayed';
-
-interface Vehicle {
-  id: string;
-  type: 'Van' | 'Truck' | 'Reefer' | 'Tractor';
-  driver: string;
-  status: VehicleStatus;
-  speed: number;
-  hoursRemaining: number;
-  telemetry: string;
-  utilization: number;
-}
-
-const vehicles: Vehicle[] = [
-  {
-    id: 'VEH-0002',
-    type: 'Van',
-    driver: 'A. Silva',
-    status: 'In Transit',
-    speed: 45,
-    hoursRemaining: 10,
-    telemetry: '14:15',
-    utilization: 59,
-  },
-  {
-    id: 'VEH-0005',
-    type: 'Truck',
-    driver: 'R. Singh',
-    status: 'In Transit',
-    speed: 68,
-    hoursRemaining: 5.8,
-    telemetry: '14:15',
-    utilization: 40,
-  },
-  {
-    id: 'VEH-0008',
-    type: 'Tractor',
-    driver: 'J. Novak',
-    status: 'In Transit',
-    speed: 93,
-    hoursRemaining: 4.6,
-    telemetry: '14:15',
-    utilization: 52,
-  },
-  {
-    id: 'VEH-0011',
-    type: 'Reefer',
-    driver: 'M. Carter',
-    status: 'In Transit',
-    speed: 40,
-    hoursRemaining: 5.7,
-    telemetry: '14:15',
-    utilization: 62,
-  },
-  {
-    id: 'VEH-0014',
-    type: 'Van',
-    driver: 'S. Tanaka',
-    status: 'In Transit',
-    speed: 66,
-    hoursRemaining: 5.2,
-    telemetry: '14:15',
-    utilization: 47,
-  },
-  {
-    id: 'VEH-0017',
-    type: 'Truck',
-    driver: 'A. Silva',
-    status: 'In Transit',
-    speed: 33,
-    hoursRemaining: 5.3,
-    telemetry: '14:15',
-    utilization: 68,
-  },
-  {
-    id: 'VEH-0019',
-    type: 'Van',
-    driver: 'K. Patel',
-    status: 'Delayed',
-    speed: 26,
-    hoursRemaining: 3.4,
-    telemetry: '13:55',
-    utilization: 74,
-  },
-  {
-    id: 'VEH-0022',
-    type: 'Truck',
-    driver: 'N. Gomez',
-    status: 'Delayed',
-    speed: 35,
-    hoursRemaining: 2.8,
-    telemetry: '13:42',
-    utilization: 82,
-  },
-];
-
-const statusOptions = ['All', 'In Transit', 'Delayed'] as const;
+const statusOptions = [
+  'All',
+  'In Transit',
+  'Delayed',
+  'Loading',
+  'Maintenance',
+  'Offline',
+  'Idle',
+] as const;
+const typeOptions = ['All', 'Van', 'Truck', 'Reefer', 'Tractor'] as const;
+const staleTelemetryThresholdMinutes = 45;
 
 export default function FleetAndDrivers() {
+  const { region } = useOutletContext<{ region: RegionCode }>();
+  const { data: vehicles = [], isFetching } = useGetFleetQuery();
+  const selectedDataRegion = getDataRegion(region);
   const [searchText, setSearchText] = useState('');
+  const [depotFilter, setDepotFilter] = useState('All');
+  const [typeFilter, setTypeFilter] = useState<(typeof typeOptions)[number]>('All');
   const [statusFilter, setStatusFilter] = useState<(typeof statusOptions)[number]>('All');
+
+  const regionVehicles = useMemo(
+    () => vehicles.filter((vehicle) => vehicle.region === selectedDataRegion),
+    [vehicles, selectedDataRegion],
+  );
+
+  const depotOptions = useMemo(
+    () => ['All', ...Array.from(new Set(regionVehicles.map((vehicle) => vehicle.depot))).sort()],
+    [regionVehicles],
+  );
+
+  useEffect(() => {
+    if (!depotOptions.includes(depotFilter)) {
+      setDepotFilter('All');
+    }
+  }, [depotFilter, depotOptions]);
 
   const filteredVehicles = useMemo(() => {
     const query = searchText.trim().toLowerCase();
 
-    return vehicles.filter((vehicle) => {
+    return regionVehicles.filter((vehicle) => {
       const matchesQuery =
         query.length === 0 ||
-        [vehicle.id, vehicle.type, vehicle.driver].join(' ').toLowerCase().includes(query);
+        [vehicle.id, vehicle.type, vehicle.driver, vehicle.depot, vehicle.region]
+          .join(' ')
+          .toLowerCase()
+          .includes(query);
 
-      const matchesStatus = statusFilter === 'All' || vehicle.status === statusFilter;
-
-      return matchesQuery && matchesStatus;
+      return (
+        matchesQuery &&
+        (depotFilter === 'All' || vehicle.depot === depotFilter) &&
+        (typeFilter === 'All' || vehicle.type === typeFilter) &&
+        (statusFilter === 'All' || vehicle.status === statusFilter)
+      );
     });
-  }, [searchText, statusFilter]);
+  }, [regionVehicles, searchText, depotFilter, typeFilter, statusFilter]);
 
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setStatusFilter(event.target.value as (typeof statusOptions)[number]);
-  };
+  const summary = useMemo(
+    () => ({
+      total: filteredVehicles.length,
+      staleCount: filteredVehicles.filter(isTelemetryStale).length,
+      hosWarningCount: filteredVehicles.filter((vehicle) => vehicle.hoursRemaining <= 2).length,
+      healthWarningCount: filteredVehicles.filter(hasHealthWarning).length,
+    }),
+    [filteredVehicles],
+  );
 
   return (
-    <Stack spacing={3} sx={{ width: '100%' }}>
-      <Box sx={{ pt: 0.5 }}>
+    <Stack spacing={3} sx={fleetStyles.root}>
+      <Box sx={fleetStyles.headerOffset}>
         <OperationsHeader
           pageName="Fleet Status"
           liveUpdate={false}
           title="FLEET & DRIVER MANAGEMENT"
-          desc="Live asset health, duty status and telemetry freshness."
+          desc={`Live asset health, duty status, HOS risk and telemetry freshness in ${selectedDataRegion}.`}
         />
       </Box>
 
       <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 1,
-          border: '1px solid #d9e3ed',
-          borderRadius: '12px',
-          backgroundColor: '#f4f8fb',
-          p: 1.2,
-        }}
+        sx={fleetStyles.summaryGrid}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            flex: 1,
-            minWidth: 0,
-            height: 38,
-            border: '1px solid #d5e0eb',
-            borderRadius: '10px',
-            backgroundColor: '#ffffff',
-            px: 1.5,
-            gap: 1,
-          }}
-        >
-          <SearchRounded sx={{ fontSize: 18, color: '#2d3f53' }} />
-          <Box
-            component="input"
-            value={searchText}
-            onChange={(event) => setSearchText(event.target.value)}
-            placeholder="Search vehicle or driver..."
-            sx={{
-              flex: 1,
-              minWidth: 0,
-              border: 'none',
-              outline: 'none',
-              background: 'transparent',
-              color: '#1d2b3b',
-              fontSize: 14,
-              '&::placeholder': {
-                color: '#6a7c92',
-                opacity: 1,
-              },
-            }}
-          />
-        </Box>
-
-        <Box
-          sx={{
-            width: { xs: '100%', sm: 150 },
-            minWidth: { xs: '100%', sm: 150 },
-            height: 38,
-            border: '1px solid #d5e0eb',
-            borderRadius: '10px',
-            backgroundColor: '#ffffff',
-          }}
-        >
-          <Select
-            value={statusFilter}
-            onChange={handleStatusChange}
-            IconComponent={KeyboardArrowDownRounded}
-            displayEmpty
-            sx={{
-              width: '100%',
-              height: '100%',
-              color: '#1b2b40',
-              fontSize: 14,
-              fontWeight: 500,
-              '& .MuiSelect-select': {
-                px: 1.5,
-                py: 0,
-                display: 'flex',
-                alignItems: 'center',
-              },
-              '& fieldset': {
-                border: 'none',
-              },
-              '& .MuiSelect-icon': {
-                right: 10,
-                color: '#1c2e45',
-              },
-            }}
-          >
-            {statusOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
+        <FleetSummaryCard label="Visible assets" value={summary.total.toString()} tone="neutral" />
+        <FleetSummaryCard label="HOS warnings" value={summary.hosWarningCount.toString()} tone="warning" />
+        <FleetSummaryCard label="Health flags" value={summary.healthWarningCount.toString()} tone="critical" />
+        <FleetSummaryCard label="Stale telemetry" value={summary.staleCount.toString()} tone="stale" />
       </Box>
 
       <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            md: 'repeat(3, minmax(0, 1fr))',
-            xl: 'repeat(4, minmax(0, 1fr))',
-          },
-          gap: 2,
-          alignItems: 'stretch',
-        }}
+        sx={fleetStyles.filterBar}
+      >
+        <SearchField
+          value={searchText}
+          onChange={setSearchText}
+          placeholder="Search vehicle, driver, depot..."
+        />
+        <FilterSelect label="Depot" value={depotFilter} options={depotOptions} onChange={setDepotFilter} />
+        <FilterSelect label="Type" value={typeFilter} options={typeOptions} onChange={setTypeFilter} />
+        <FilterSelect label="Status" value={statusFilter} options={statusOptions} onChange={setStatusFilter} />
+      </Box>
+
+      <Box
+        sx={fleetStyles.vehicleGrid}
       >
         {filteredVehicles.length === 0 ? (
           <Box
-            sx={{
-              gridColumn: '1 / -1',
-              border: '1px solid #d9e3ed',
-              borderRadius: '12px',
-              backgroundColor: '#f9fbfd',
-              py: 4,
-              textAlign: 'center',
-              color: '#64798f',
-              fontSize: 14,
-            }}
+            sx={fleetStyles.emptyState}
           >
-            No vehicles match the current search.
+            {isFetching ? 'Loading fleet telemetry...' : 'No vehicles match the current filters.'}
           </Box>
         ) : (
           filteredVehicles.map((vehicle) => <VehicleCard key={vehicle.id} vehicle={vehicle} />)
@@ -276,150 +152,235 @@ export default function FleetAndDrivers() {
   );
 }
 
-interface VehicleCardProps {
-  vehicle: Vehicle;
-}
-
-function VehicleCard({ vehicle }: VehicleCardProps) {
-  const statusColor = vehicle.status === 'Delayed' ? '#f5c17a' : '#9ddcc7';
-  const statusBg = vehicle.status === 'Delayed' ? '#fdf0d8' : '#dff6ef';
+function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
+  const statusTone = getStatusTone(vehicle.status);
+  const hosTone = getHosTone(vehicle.hoursRemaining);
+  const staleTelemetry = isTelemetryStale(vehicle);
+  const healthWarning = hasHealthWarning(vehicle);
+  const telemetryTime = new Intl.DateTimeFormat('en', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(vehicle.telemetry));
 
   return (
     <Box
-      sx={{
-        border: '1px solid #d9e3ed',
-        borderRadius: '16px',
-        backgroundColor: '#f4f8fb',
-        p: 2,
-        minHeight: 210,
-        display: 'flex',
-        flexDirection: 'column',
-      }}
+      sx={vehicleCardSx(staleTelemetry || healthWarning, staleTelemetry)}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 1.5,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
+      <Stack direction="row" sx={fleetStyles.vehicleHeader}>
+        <Stack direction="row" spacing={1.2} sx={fleetStyles.vehicleIdentity}>
           <Box
-            sx={{
-              width: 38,
-              height: 38,
-              borderRadius: '12px',
-              backgroundColor: '#dff4f0',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#0f8d81',
-            }}
+            sx={fleetStyles.iconTile}
           >
-            <LocalShippingRounded sx={{ fontSize: 18 }} />
+            <LocalShippingRounded sx={fleetStyles.iconSmall} />
           </Box>
-          <Box>
-            <Typography
-              sx={{ fontSize: 16, fontWeight: 800, color: '#111827', letterSpacing: '-0.04em' }}
-            >
+          <Box sx={fleetStyles.vehicleIdentity}>
+            <Typography sx={fleetStyles.vehicleTitle}>
               {vehicle.id}
             </Typography>
-            <Typography sx={{ fontSize: 13, color: '#687c91', fontWeight: 500 }}>
-              {vehicle.type}
+            <Typography sx={fleetStyles.vehicleSubtitle}>
+              {vehicle.type} - {vehicle.depot}
             </Typography>
           </Box>
-        </Box>
+        </Stack>
 
         <Chip
           label={vehicle.status}
-          sx={{
-            height: 26,
-            borderRadius: '999px',
-            backgroundColor: statusBg,
-            color: '#0f8d81',
-            fontSize: 11,
-            fontWeight: 700,
-            '& .MuiChip-label': {
-              px: 1,
-            },
-            border: `1px solid ${statusColor}`,
-          }}
+          sx={statusChipSx(statusTone)}
+        />
+      </Stack>
+
+      <Box sx={fleetStyles.metricsGrid}>
+        <Metric label="Driver" value={vehicle.driver} />
+        <Metric label="Duty state" value={vehicle.dutyState} align="right" />
+        <Metric icon={<SpeedRounded sx={fleetStyles.metricIcon} />} label="Speed" value={`${vehicle.speed} km/h`} />
+        <Metric label="Region" value={getRegionLabel(vehicle.region)} align="right" />
+        <Metric
+          icon={<TimerRounded sx={fleetStyles.metricIcon} />}
+          label="HOS remaining"
+          value={`${vehicle.hoursRemaining}h`}
+          tone={hosTone}
+        />
+        <Metric
+          label="Telemetry"
+          value={staleTelemetry ? `${telemetryTime} stale` : telemetryTime}
+          tone={staleTelemetry ? 'warning' : 'normal'}
+          align="right"
         />
       </Box>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 1.5,
-          mt: 1,
-          mb: 2,
-        }}
-      >
-        <Box>
-          <Typography sx={{ color: '#6b7f94', fontSize: 12, mb: 0.2 }}>Driver</Typography>
-          <Typography sx={{ color: '#15253d', fontSize: 14, fontWeight: 600 }}>
-            {vehicle.driver}
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ color: '#6b7f94', fontSize: 12, mb: 0.2, textAlign: 'right' }}>
-            Speed
-          </Typography>
-          <Typography sx={{ color: '#15253d', fontSize: 14, fontWeight: 600, textAlign: 'right' }}>
-            {vehicle.speed} km/h
-          </Typography>
-        </Box>
+      <Stack direction="row" spacing={0.8} sx={fleetStyles.healthChips}>
+        {vehicle.hoursRemaining <= 2 && <HealthChip severity="warning" label="HOS limit approaching" />}
+        {staleTelemetry && <HealthChip severity="warning" label="Stale telemetry" />}
+        {vehicle.fuelLevel <= 25 && <HealthChip severity="critical" label="Low fuel" />}
+        {vehicle.chargeLevel !== null && vehicle.chargeLevel <= 25 && (
+          <HealthChip severity="critical" label="Low charge" />
+        )}
+        {vehicle.engineFaults.length > 0 && (
+          <HealthChip severity="critical" label={`${vehicle.engineFaults.length} engine fault`} />
+        )}
+        {vehicle.temperature !== null && (vehicle.temperature < 2 || vehicle.temperature > 8) && (
+          <HealthChip severity="critical" label="Reefer temp out of range" />
+        )}
+      </Stack>
 
-        <Box>
-          <Typography sx={{ color: '#6b7f94', fontSize: 12, mb: 0.2 }}>HOS remaining</Typography>
-          <Typography sx={{ color: '#15253d', fontSize: 14, fontWeight: 600 }}>
-            {vehicle.hoursRemaining}h
-          </Typography>
-        </Box>
-        <Box>
-          <Typography sx={{ color: '#6b7f94', fontSize: 12, mb: 0.2, textAlign: 'right' }}>
-            Telemetry
-          </Typography>
-          <Typography sx={{ color: '#15253d', fontSize: 14, fontWeight: 600, textAlign: 'right' }}>
-            {vehicle.telemetry}
-          </Typography>
-        </Box>
-      </Box>
-
-      <Box sx={{ mt: 'auto' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 0.5,
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography sx={{ color: '#768aa2', fontSize: 12, fontWeight: 600 }}>
-              Utilization
+      <Box sx={fleetStyles.signalSection}>
+        <SignalBar label="Utilization" value={vehicle.utilization} />
+        <SignalBar label="Fuel" value={vehicle.fuelLevel} color={vehicle.fuelLevel <= 25 ? '#ef4444' : '#3eb7a9'} />
+        {vehicle.chargeLevel !== null && (
+          <SignalBar
+            label="Charge"
+            value={vehicle.chargeLevel}
+            color={vehicle.chargeLevel <= 25 ? '#ef4444' : '#3eb7a9'}
+          />
+        )}
+        {vehicle.temperature !== null && (
+          <Stack direction="row" spacing={0.8} sx={fleetStyles.inlineSignal}>
+            <ThermostatRounded sx={fleetStyles.inlineSignalIcon} />
+            <Typography sx={fleetStyles.inlineText}>
+              Reefer temperature: {vehicle.temperature} C
             </Typography>
-          </Box>
-          <Typography sx={{ color: '#1b2d43', fontSize: 12, fontWeight: 700 }}>
-            {vehicle.utilization}%
-          </Typography>
-        </Box>
-        <LinearProgress
-          variant="determinate"
-          value={vehicle.utilization}
-          sx={{
-            height: 6,
-            borderRadius: 999,
-            backgroundColor: '#dfe7ef',
-            '& .MuiLinearProgress-bar': {
-              backgroundColor: '#3eb7a9',
-              borderRadius: 999,
-            },
-          }}
-        />
+          </Stack>
+        )}
+        {vehicle.engineFaults.length > 0 && (
+          <Stack direction="row" spacing={0.8} sx={fleetStyles.inlineFault}>
+            <ErrorOutlineRounded sx={fleetStyles.faultIcon} />
+            <Typography sx={fleetStyles.faultText}>
+              {vehicle.engineFaults.join(', ')}
+            </Typography>
+          </Stack>
+        )}
       </Box>
     </Box>
   );
+}
+
+function Metric({
+  align = 'left',
+  icon,
+  label,
+  tone = 'normal',
+  value,
+}: {
+  align?: 'left' | 'right';
+  icon?: ReactNode;
+  label: string;
+  tone?: 'normal' | 'warning' | 'critical';
+  value: string;
+}) {
+  return (
+    <Box sx={metricRootSx(align)}>
+      <Typography sx={fleetStyles.metricLabel}>
+        {label}
+      </Typography>
+      <Stack
+        direction="row"
+        spacing={0.5}
+        sx={metricValueRowSx(align)}
+      >
+        {icon}
+        <Typography sx={metricValueSx(tone)}>{value}</Typography>
+      </Stack>
+    </Box>
+  );
+}
+
+function SignalBar({ color = '#3eb7a9', label, value }: { color?: string; label: string; value: number }) {
+  return (
+    <Box sx={fleetStyles.signalRoot}>
+      <Stack direction="row" sx={fleetStyles.signalHeader}>
+        <Typography sx={fleetStyles.signalLabel}>{label}</Typography>
+        <Typography sx={fleetStyles.signalValue}>{value}%</Typography>
+      </Stack>
+      <LinearProgress
+        variant="determinate"
+        value={value}
+        sx={progressBarSx(color)}
+      />
+    </Box>
+  );
+}
+
+function HealthChip({ label, severity }: { label: string; severity: 'warning' | 'critical' }) {
+  const isCritical = severity === 'critical';
+
+  return (
+    <Chip
+      icon={isCritical ? <BatteryAlertRounded /> : <TimerRounded />}
+      label={label}
+      size="small"
+      sx={healthChipSx(isCritical)}
+    />
+  );
+}
+
+function FleetSummaryCard({
+  label,
+  tone,
+  value,
+}: {
+  label: string;
+  tone: FleetSummaryTone;
+  value: string;
+}) {
+  return (
+    <Box
+      sx={summaryCardSx(tone)}
+    >
+      <Typography sx={fleetStyles.summaryLabel}>{label}</Typography>
+      <Typography sx={summaryValueSx(tone)}>{value}</Typography>
+    </Box>
+  );
+}
+
+function getStatusTone(status: VehicleStatus) {
+  switch (status) {
+    case 'Delayed':
+      return { bg: '#fff0dc', text: '#a15c08', border: '#f5c17a' };
+    case 'Loading':
+      return { bg: '#e9ebff', text: '#5162d5', border: '#c5ccff' };
+    case 'Maintenance':
+      return { bg: '#fee2e2', text: '#b42318', border: '#fecaca' };
+    case 'Offline':
+      return { bg: '#e5e7eb', text: '#4b5563', border: '#cbd5e1' };
+    case 'Idle':
+      return { bg: '#f1f5f9', text: '#475569', border: '#d5e0eb' };
+    default:
+      return { bg: '#dff6ef', text: '#0f8d81', border: '#9ddcc7' };
+  }
+}
+
+function getHosTone(hoursRemaining: number): 'normal' | 'warning' | 'critical' {
+  if (hoursRemaining <= 1.5) {
+    return 'critical';
+  }
+
+  if (hoursRemaining <= 3) {
+    return 'warning';
+  }
+
+  return 'normal';
+}
+
+function isTelemetryStale(vehicle: Vehicle) {
+  const telemetryTime = new Date(vehicle.telemetry).getTime();
+  const currentBusinessTime = new Date('2026-08-19T14:17:00+05:30').getTime();
+  const minutesSinceTelemetry = (currentBusinessTime - telemetryTime) / 60000;
+
+  return vehicle.status === 'Offline' || minutesSinceTelemetry > staleTelemetryThresholdMinutes;
+}
+
+function hasHealthWarning(vehicle: Vehicle) {
+  const hasFuelWarning = vehicle.fuelLevel <= 25;
+  const hasChargeWarning = vehicle.chargeLevel !== null && vehicle.chargeLevel <= 25;
+  const hasReeferWarning =
+    vehicle.temperature !== null && (vehicle.temperature < 2 || vehicle.temperature > 8);
+
+  return hasFuelWarning || hasChargeWarning || hasReeferWarning || vehicle.engineFaults.length > 0;
+}
+
+function getRegionLabel(region: string) {
+  const regionEntry = Object.entries(REGIONS).find(([, config]) => config.name === region);
+  const regionCode = regionEntry?.[0] as RegionCode | undefined;
+
+  return regionCode ? REGIONS[regionCode].name : region;
 }

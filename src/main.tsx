@@ -1,19 +1,19 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { CssBaseline } from '@mui/material';
-import { HashRouter } from 'react-router';
-import { Provider } from 'react-redux';
-
+import { BrowserRouter } from 'react-router';
 import App from './App';
-import { store } from './store';
 import './i18n/i18n';
+import { store } from './store';
+import { Provider } from 'react-redux';
+import AppThemeProvider from './theme/AppThemeProvider';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <HashRouter>
-        <CssBaseline />
-        <App />
-      </HashRouter>
+      <AppThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AppThemeProvider>
     </Provider>
   </StrictMode>,
 );

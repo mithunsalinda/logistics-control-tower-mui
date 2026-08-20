@@ -3,3 +3,8 @@ export { default as DrawerHeader } from './DrawerHeader';
 export { default as InputBox } from './InputBox';
 export { default as NavigationMenu } from '../layout/NavigationMenu';
 export { default as BaseSelect } from './BaseSelect';
+export { default as ConfirmDialog } from './ConfirmDialog';
+export { default as FilterSelect } from './forms/FilterSelect';
+export { default as PageLoader } from './loading/PageLoader';
+export { default as PageTransitionLoader } from './loading/PageTransitionLoader';
+export { default as SearchField } from './forms/SearchField';

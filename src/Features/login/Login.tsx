@@ -16,15 +16,13 @@ import LockIcon from '@mui/icons-material/Lock';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { Button } from '../../components';
-import { useAppDispatch } from '../../store';
-import { login } from '../../store/authSlice';
+import { setCredentials, useAppDispatch, useLoginMutation } from '../../store';
 
 import { loginStyles } from './Login.styles';
 import { useTranslation } from 'react-i18next';
-
 type LoginFormValues = {
   email: string;
   password: string;
@@ -32,10 +30,11 @@ type LoginFormValues = {
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const { t } = useTranslation('auth');
   const [loginError, setLoginError] = useState('');
-
+  const [loginUser, { isLoading }] = useLoginMutation();
   const {
     register,
     handleSubmit,
@@ -47,19 +46,25 @@ const Login = () => {
     },
   });
 
-  const onSubmit = ({ email, password }: LoginFormValues) => {
+  const onSubmit = async ({ email, password }: LoginFormValues) => {
     setLoginError('');
 
-    if (email !== 'admin@gmail.com' || password !== 'password123') {
+    try {
+      const response = await loginUser({
+        email,
+        password,
+      }).unwrap();
+
+      dispatch(setCredentials(response.user));
+      const from = (location.state as { from?: string } | null)?.from ?? '/dashboard';
+
+      navigate(from, {
+        replace: true,
+      });
+    } catch (err) {
+      console.error('Login failed:', err);
       setLoginError('Invalid email or password');
-      return;
     }
-
-    dispatch(login({ email }));
-
-    navigate('/dashboard', {
-      replace: true,
-    });
   };
 
   return (
@@ -74,9 +79,7 @@ const Login = () => {
           <Typography variant="overline" sx={loginStyles.eyebrow}>
             REAL-TIME SUPPLY CHAIN OPERATIONS
           </Typography>
-
           <Typography sx={loginStyles.title}>{t('bannertext')}</Typography>
-
           <Typography sx={loginStyles.description}>{t('bannerbn')}</Typography>
         </Box>
       </Box>
@@ -92,7 +95,6 @@ const Login = () => {
                 Sign In
               </Typography>
             </Stack>
-
             <Stack spacing={2}>
               <TextField
                 label="Email"
@@ -103,10 +105,8 @@ const Login = () => {
                 helperText={errors.email?.message}
                 {...register('email', {
                   required: 'Email address is required',
-
                   pattern: {
                     value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-
                     message: 'Enter a valid email address (e.g. user@example.com)',
                   },
                 })}
@@ -121,24 +121,19 @@ const Login = () => {
                 helperText={errors.password?.message}
                 {...register('password', {
                   required: 'Password is required',
-
                   minLength: {
                     value: 6,
-
                     message: 'Password must contain at least 6 characters',
                   },
                 })}
               />
-
               <FormControlLabel
                 control={<Checkbox defaultChecked />}
                 label="Keep me signed in on this device"
               />
-
               {loginError && <Alert severity="error">{loginError}</Alert>}
-
-              <Button type="submit" customVariant="primary" size="large">
-                Sign in to Control Tower
+              <Button type="submit" customVariant="primary" size="large" disabled={isLoading}>
+                {isLoading ? 'Signing in...' : 'Sign in to Control Tower'}
               </Button>
             </Stack>
           </CardContent>

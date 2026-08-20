@@ -1,52 +1,9 @@
 import { ArrowForwardRounded, WarningAmberRounded } from '@mui/icons-material';
 
 import { Box, Chip, IconButton, Stack, Typography } from '@mui/material';
+import { useGetExceptionsQuery } from '../store';
 
 type Priority = 'Low' | 'Medium' | 'High';
-
-interface ExceptionItem {
-  id: number;
-  title: string;
-  description: string;
-  shipmentId: string;
-  time: string;
-  priority: Priority;
-}
-
-const exceptions: ExceptionItem[] = [
-  {
-    id: 1,
-    title: 'Temperature Excursion',
-    description: 'Reefer temperature is outside the configured threshold.',
-    shipmentId: 'SHP-000084',
-    time: '11:30',
-    priority: 'Low',
-  },
-  {
-    id: 2,
-    title: 'Geofence Violation',
-    description: 'Asset entered a restricted operational zone.',
-    shipmentId: 'SHP-000333',
-    time: '10:54',
-    priority: 'High',
-  },
-  {
-    id: 3,
-    title: 'Dwell Breach',
-    description: 'Asset dwell time exceeded the facility threshold.',
-    shipmentId: 'SHP-000582',
-    time: '10:18',
-    priority: 'Low',
-  },
-  {
-    id: 4,
-    title: 'ETA Slippage',
-    description: 'Estimated arrival has slipped beyond the committed ETA.',
-    shipmentId: 'SHP-000831',
-    time: '09:42',
-    priority: 'Low',
-  },
-];
 
 const priorityStyles: Record<
   Priority,
@@ -80,6 +37,9 @@ const priorityStyles: Record<
 };
 
 export default function ActiveExceptions() {
+  const { data: exceptions = [] } = useGetExceptionsQuery();
+  const activeExceptions = exceptions.filter((item) => item.status !== 'Resolved').slice(0, 4);
+
   return (
     <Box
       sx={{
@@ -92,7 +52,6 @@ export default function ActiveExceptions() {
         p: 3,
       }}
     >
-      {/* Header */}
       <Stack
         direction="row"
         sx={{
@@ -127,7 +86,6 @@ export default function ActiveExceptions() {
           </Typography>
         </Box>
 
-        {/* View All */}
         <Stack
           direction="row"
           spacing={0.3}
@@ -163,10 +121,14 @@ export default function ActiveExceptions() {
         </Stack>
       </Stack>
 
-      {/* Cards */}
       <Stack spacing={1.5}>
-        {exceptions.map((item) => {
-          const priority = priorityStyles[item.priority];
+        {activeExceptions.map((item) => {
+          const priorityLabel: Priority = item.severity === 'Critical' ? 'High' : item.severity;
+          const priority = priorityStyles[priorityLabel];
+          const eventTime = new Intl.DateTimeFormat('en', {
+            hour: '2-digit',
+            minute: '2-digit',
+          }).format(new Date(item.timestamp));
 
           return (
             <Box
@@ -188,7 +150,6 @@ export default function ActiveExceptions() {
                 },
               }}
             >
-              {/* Left priority indicator */}
               <Box
                 sx={{
                   position: 'absolute',
@@ -200,7 +161,6 @@ export default function ActiveExceptions() {
                 }}
               />
 
-              {/* Card body */}
               <Stack
                 direction="row"
                 spacing={1.7}
@@ -209,7 +169,6 @@ export default function ActiveExceptions() {
                   pl: 1.8,
                 }}
               >
-                {/* Warning Icon */}
                 <Box
                   sx={{
                     width: 44,
@@ -230,14 +189,12 @@ export default function ActiveExceptions() {
                   />
                 </Box>
 
-                {/* Main Content */}
                 <Box
                   sx={{
                     flex: 1,
                     minWidth: 0,
                   }}
                 >
-                  {/* Title + Priority */}
                   <Stack
                     direction="row"
                     spacing={1}
@@ -260,7 +217,7 @@ export default function ActiveExceptions() {
                     </Typography>
 
                     <Chip
-                      label={item.priority}
+                      label={priorityLabel}
                       size="small"
                       sx={{
                         flexShrink: 0,
@@ -278,7 +235,6 @@ export default function ActiveExceptions() {
                     />
                   </Stack>
 
-                  {/* Description */}
                   <Typography
                     sx={{
                       color: '#88a8cc',
@@ -292,7 +248,6 @@ export default function ActiveExceptions() {
                     {item.description}
                   </Typography>
 
-                  {/* Shipment ID + Time */}
                   <Typography
                     sx={{
                       color: '#7ea2cb',
@@ -300,7 +255,7 @@ export default function ActiveExceptions() {
                       mt: 0.3,
                     }}
                   >
-                    {item.shipmentId} · {item.time}
+                    {item.shipmentId} - {eventTime}
                   </Typography>
                 </Box>
               </Stack>

@@ -1,4 +1,4 @@
-import type { RegionCode } from '../config/regions';
+import type { RegionCode } from '../../config/regions';
 
 export type VehicleStatus = 'ACTIVE' | 'DELAYED' | 'WARNING' | 'IDLE';
 
@@ -12,6 +12,10 @@ export interface Vehicle {
 
   latitude: number;
   longitude: number;
+  originLatitude: number;
+  originLongitude: number;
+  destinationLatitude: number;
+  destinationLongitude: number;
 
   status: VehicleStatus;
   mode: TransportMode;
@@ -36,12 +40,6 @@ interface Hub {
   latitude: number;
   longitude: number;
 }
-
-/*
- * ==============================
- * EUROPE HUBS
- * ==============================
- */
 
 const europeHubs: Hub[] = [
   {
@@ -96,12 +94,6 @@ const europeHubs: Hub[] = [
   },
 ];
 
-/*
- * ==============================
- * NORTH AMERICA HUBS
- * ==============================
- */
-
 const northAmericaHubs: Hub[] = [
   {
     city: 'New York',
@@ -154,12 +146,6 @@ const northAmericaHubs: Hub[] = [
     longitude: -99.1332,
   },
 ];
-
-/*
- * ==============================
- * ASIA PACIFIC HUBS
- * ==============================
- */
 
 const asiaPacificHubs: Hub[] = [
   {
@@ -250,9 +236,6 @@ function randomItem<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-/*
- * Generate vehicles for one region.
- */
 function generateVehicles(
   region: RegionCode,
   prefix: string,
@@ -266,21 +249,12 @@ function generateVehicles(
 
     let destination = randomItem(hubs);
 
-    /*
-     * Make sure destination is different
-     * from origin.
-     */
     while (destination.city === origin.city) {
       destination = randomItem(hubs);
     }
 
     const status = randomItem(statuses);
 
-    /*
-     * Spread vehicles around the hub.
-     *
-     * This helps us test map clustering.
-     */
     const latitudeOffset = (Math.random() - 0.5) * 2;
 
     const longitudeOffset = (Math.random() - 0.5) * 2;
@@ -297,6 +271,10 @@ function generateVehicles(
       latitude: origin.latitude + latitudeOffset,
 
       longitude: origin.longitude + longitudeOffset,
+      originLatitude: origin.latitude,
+      originLongitude: origin.longitude,
+      destinationLatitude: destination.latitude,
+      destinationLongitude: destination.longitude,
 
       status,
 
@@ -322,18 +300,6 @@ function generateVehicles(
 
   return result;
 }
-
-/*
- * ======================================
- * BUSINESS REQUIREMENT DATA
- * ======================================
- *
- * Europe         = 3,100
- * North America  = 2,900
- * Asia Pacific   = 2,500
- *
- * TOTAL          = 8,500
- */
 
 const europeVehicles = generateVehicles('EUROPE', 'EU', europeHubs, 3100);
 

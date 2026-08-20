@@ -1,35 +1,69 @@
 import { Box, Divider, Drawer } from '@mui/material';
 
-import { useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
-import { DrawerHeader, NavigationMenu } from '../components';
+import { DrawerHeader, NavigationMenu, PageLoader, PageTransitionLoader } from '../components';
 import type { RegionCode } from '../config/regions';
 import { navigationItems } from '../shared/constants/navigation';
+import { useAppSelector } from '../store';
+import { canAccess } from '../utils/auth';
+import { useThemeMode } from '../theme/themeContext';
 import TopNavbar from './TopNavbar';
 
 const drawerWidth = 250;
+const regionPreferenceKey = 'logistics.preference.region';
 
 const AppShell = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useAppSelector((state) => state.auth.user);
+  const { mode: themeMode, toggleMode } = useThemeMode();
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [region, setRegion] = useState<RegionCode>('EUROPE');
+  const [region, setRegion] = useState<RegionCode>(
+    () => (localStorage.getItem(regionPreferenceKey) as RegionCode | null) ?? 'EUROPE',
+  );
+  const [pageTransitionLoading, setPageTransitionLoading] = useState(false);
+  const previousPathRef = useRef(location.pathname);
+
+  const visibleNavigationItems = useMemo(
+    () => navigationItems.filter((item) => canAccess(user?.role, item.allowedRoles)),
+    [user?.role],
+  );
+
   const handleRegionChange = (newRegion: RegionCode) => {
     setRegion(newRegion);
+    localStorage.setItem(regionPreferenceKey, newRegion);
   };
   const handleNavigation = (path: string) => {
     navigate(path);
     setMobileDrawerOpen(false);
   };
 
+  useEffect(() => {
+    if (previousPathRef.current === location.pathname) {
+      return;
+    }
+
+    previousPathRef.current = location.pathname;
+    setPageTransitionLoading(true);
+
+    const timeoutId = window.setTimeout(() => {
+      setPageTransitionLoading(false);
+    }, 360);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [location.pathname]);
+
   const drawerContent = (
     <>
       <DrawerHeader />
       <Divider />
-      <NavigationMenu
-        items={navigationItems}
+        <NavigationMenu
+        items={visibleNavigationItems}
         selectedPath={location.pathname}
         onNavigate={handleNavigation}
       />
@@ -42,7 +76,7 @@ const AppShell = () => {
         display: 'flex',
         minHeight: '100vh',
         width: '100%',
-        backgroundColor: '#f5f7fb',
+        backgroundColor: 'var(--app-bg)',
       }}
     >
       <Box
@@ -106,24 +140,42 @@ const AppShell = () => {
           minHeight: '100vh',
         }}
       >
-        <TopNavbar region={region} onRegionChange={handleRegionChange} />
-        <Divider />
         <Box
           sx={{
+            position: 'sticky',
+            top: 0,
+            zIndex: (theme) => theme.zIndex.appBar,
+            backgroundColor: 'var(--app-shell)',
+          }}
+        >
+          <TopNavbar
+            region={region}
+            themeMode={themeMode}
+            onRegionChange={handleRegionChange}
+            onThemeToggle={toggleMode}
+          />
+          <Divider />
+        </Box>
+        <Box
+          sx={{
+            position: 'relative',
             flexGrow: 1,
-            backgroundColor: '#f5f7fb',
+            backgroundColor: 'var(--app-bg)',
             padding: {
               xs: 2,
               sm: 3,
             },
           }}
         >
-          <Outlet
-            context={{
-              region,
-              onRegionChange: handleRegionChange,
-            }}
-          />
+          <PageTransitionLoader loading={pageTransitionLoading} />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet
+              context={{
+                region,
+                onRegionChange: handleRegionChange,
+              }}
+            />
+          </Suspense>
         </Box>
       </Box>
     </Box>

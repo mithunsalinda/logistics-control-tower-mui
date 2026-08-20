@@ -1,0 +1,1739 @@
+{
+  "users": [
+    {
+      "id": "usr-001",
+      "email": "dispatcher@nexus.com",
+      "password": "password123",
+      "name": "Demo Dispatcher",
+      "role": "Dispatcher",
+      "status": "Active",
+      "defaultRegion": "NORTH_AMERICA"
+    },
+    {
+      "id": "usr-002",
+      "email": "admin@nexus.com",
+      "password": "admin123",
+      "name": "Admin Operator",
+      "role": "Administrator",
+      "status": "Active",
+      "defaultRegion": "EUROPE"
+    },
+    {
+      "id": "usr-003",
+      "email": "manager@nexus.com",
+      "password": "manager123",
+      "name": "Ops Manager",
+      "role": "Operations Manager",
+      "status": "Active",
+      "defaultRegion": "NORTH_AMERICA"
+    },
+    {
+      "id": "usr-004",
+      "email": "planner@nexus.com",
+      "password": "planner123",
+      "name": "Network Planner",
+      "role": "Planner",
+      "status": "Active",
+      "defaultRegion": "EUROPE"
+    },
+    {
+      "id": "usr-005",
+      "email": "warehouse@nexus.com",
+      "password": "warehouse123",
+      "name": "Warehouse Coordinator",
+      "role": "Warehouse Coordinator",
+      "status": "Active",
+      "defaultRegion": "ASIA_PACIFIC"
+    },
+    {
+      "id": "usr-006",
+      "email": "viewer@nexus.com",
+      "password": "viewer123",
+      "name": "Read Only Viewer",
+      "role": "Read-only Viewer",
+      "status": "Active",
+      "defaultRegion": "EUROPE"
+    }
+  ],
+  "auditEvents": [
+    {
+      "id": "AUD-0001",
+      "action": "Login",
+      "actor": "Demo Dispatcher",
+      "role": "Dispatcher",
+      "domain": "Authentication",
+      "target": "dispatcher@nexus.com",
+      "timestamp": "2026-08-19T08:00:00+05:30",
+      "details": "User authenticated through json-server mock identity provider."
+    },
+    {
+      "id": "AUD-0002",
+      "action": "Bulk notify",
+      "actor": "Demo Dispatcher",
+      "role": "Dispatcher",
+      "domain": "Shipments",
+      "target": "SHP-00005, SHP-00009",
+      "timestamp": "2026-08-19T09:20:00+05:30",
+      "details": "Customer notification queued for selected delayed shipments."
+    },
+    {
+      "id": "AUD-0003",
+      "action": "Acknowledge critical alert",
+      "actor": "Demo Dispatcher",
+      "role": "Dispatcher",
+      "domain": "Exceptions",
+      "target": "EXC-0018",
+      "timestamp": "2026-08-19T10:45:00+05:30",
+      "details": "Geofence violation acknowledged from notification center."
+    },
+    {
+      "action": "notify customers for selected shipments",
+      "actor": "Demo Dispatcher",
+      "role": "Dispatcher",
+      "domain": "Shipments",
+      "target": "SHP-00002",
+      "details": "Bulk action completed from shipment grid for 1 selected shipment(s).",
+      "id": "GcKdQ7hSXnw",
+      "timestamp": "2026-08-19T10:49:13.148Z"
+    }
+  ],
+  "dashboardMetrics": [
+    {
+      "id": "active-shipments",
+      "title": "Active shipments",
+      "value": "5,000",
+      "description": "+2.8% vs yesterday"
+    },
+    {
+      "id": "vehicles-moving",
+      "title": "Vehicles moving",
+      "value": "33",
+      "description": "Across selected region"
+    },
+    {
+      "id": "at-risk-shipments",
+      "title": "At-risk shipments",
+      "value": "893",
+      "description": "Requires attention"
+    },
+    {
+      "id": "critical-exceptions",
+      "title": "Critical exceptions",
+      "value": "2",
+      "description": "Unresolved"
+    },
+    {
+      "id": "on-time-delivery",
+      "title": "On-time delivery",
+      "value": "94.7%",
+      "description": "+1.4 pts this week"
+    }
+  ],
+  "shipments": [
+    {
+      "id": "SHP-00002",
+      "reference": "REF-20260001",
+      "origin": "Dallas",
+      "destination": "Paris",
+      "carrier": "BlueLine Logistics",
+      "status": "In Transit",
+      "eta": "2026-08-19T11:17:00+05:30",
+      "risk": "Medium",
+      "customer": "Aster Retail",
+      "mode": "Air",
+      "region": "Europe"
+    },
+    {
+      "id": "SHP-00003",
+      "reference": "REF-20260002",
+      "origin": "Atlanta",
+      "destination": "Colombo",
+      "carrier": "Atlas Cargo",
+      "status": "In Transit",
+      "eta": "2026-08-19T12:17:00+05:30",
+      "risk": "Medium",
+      "customer": "Medline Global",
+      "mode": "Ocean",
+      "region": "APAC"
+    },
+    {
+      "id": "SHP-00004",
+      "reference": "REF-20260003",
+      "origin": "Los Angeles",
+      "destination": "Chicago",
+      "carrier": "SwiftHaul",
+      "status": "In Transit",
+      "eta": "2026-08-19T13:17:00+05:30",
+      "risk": "Low",
+      "customer": "Northwind Foods",
+      "mode": "Road",
+      "region": "Americas"
+    },
+    {
+      "id": "SHP-00005",
+      "reference": "REF-20260004",
+      "origin": "Toronto",
+      "destination": "Los Angeles",
+      "carrier": "OceanBridge",
+      "status": "Delayed",
+      "eta": "2026-08-19T14:17:00+05:30",
+      "risk": "High",
+      "customer": "Contoso Manufacturing",
+      "mode": "Rail",
+      "region": "Americas"
+    },
+    {
+      "id": "SHP-00006",
+      "reference": "REF-20260005",
+      "origin": "Rotterdam",
+      "destination": "Hamburg",
+      "carrier": "NorthStar Freight",
+      "status": "In Transit",
+      "eta": "2026-08-19T15:17:00+05:30",
+      "risk": "Low",
+      "customer": "Fabrikam Industrial",
+      "mode": "Road",
+      "region": "Europe"
+    },
+    {
+      "id": "SHP-00007",
+      "reference": "REF-20260006",
+      "origin": "Hamburg",
+      "destination": "Singapore",
+      "carrier": "BlueLine Logistics",
+      "status": "At Dock",
+      "eta": "2026-08-19T16:17:00+05:30",
+      "risk": "Low",
+      "customer": "Wingtip Pharma",
+      "mode": "Ocean",
+      "region": "APAC"
+    },
+    {
+      "id": "SHP-00008",
+      "reference": "REF-20260007",
+      "origin": "Munich",
+      "destination": "Lisbon",
+      "carrier": "JetStream Cargo",
+      "status": "Delivered",
+      "eta": "2026-08-20T09:20:00+05:30",
+      "risk": "Low",
+      "customer": "Aster Retail",
+      "mode": "Air",
+      "region": "Europe"
+    },
+    {
+      "id": "SHP-00009",
+      "reference": "REF-20260008",
+      "origin": "Frankfurt",
+      "destination": "Prague",
+      "carrier": "Apex Transit",
+      "status": "Delayed",
+      "eta": "2026-08-20T11:00:00+05:30",
+      "risk": "Medium",
+      "customer": "Northwind Foods",
+      "mode": "Road",
+      "region": "Europe"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-10001",
+      "customer": "Aster Retail",
+      "poNumber": "PO-88421",
+      "allocationStatus": "Allocated",
+      "shipmentIds": [
+        "SHP-00002",
+        "SHP-00008"
+      ],
+      "lines": [
+        {
+          "sku": "AST-24-PALLET",
+          "description": "Retail mixed pallets",
+          "quantity": 24,
+          "status": "Allocated"
+        },
+        {
+          "sku": "AST-ICE-011",
+          "description": "Temperature monitored displays",
+          "quantity": 6,
+          "status": "Backordered"
+        }
+      ]
+    },
+    {
+      "id": "ORD-10002",
+      "customer": "Medline Global",
+      "poNumber": "PO-77310",
+      "allocationStatus": "Partially Allocated",
+      "shipmentIds": [
+        "SHP-00003"
+      ],
+      "lines": [
+        {
+          "sku": "MED-REEFER-20",
+          "description": "Cold-chain medical cartons",
+          "quantity": 120,
+          "status": "Allocated"
+        },
+        {
+          "sku": "MED-SCAN-02",
+          "description": "Diagnostic equipment cases",
+          "quantity": 14,
+          "status": "Pending"
+        }
+      ]
+    },
+    {
+      "id": "ORD-10003",
+      "customer": "Northwind Foods",
+      "poNumber": "PO-66218",
+      "allocationStatus": "Allocated",
+      "shipmentIds": [
+        "SHP-00004",
+        "SHP-00009"
+      ],
+      "lines": [
+        {
+          "sku": "NWF-DRY-01",
+          "description": "Dry grocery cartons",
+          "quantity": 320,
+          "status": "Allocated"
+        },
+        {
+          "sku": "NWF-FRZ-44",
+          "description": "Frozen meal cases",
+          "quantity": 90,
+          "status": "Allocated"
+        }
+      ]
+    },
+    {
+      "id": "ORD-10004",
+      "customer": "Contoso Manufacturing",
+      "poNumber": "PO-99140",
+      "allocationStatus": "Exception",
+      "shipmentIds": [
+        "SHP-00005"
+      ],
+      "lines": [
+        {
+          "sku": "CON-MACH-7",
+          "description": "Machine components",
+          "quantity": 18,
+          "status": "Allocated"
+        },
+        {
+          "sku": "CON-HAZ-3",
+          "description": "Controlled materials",
+          "quantity": 4,
+          "status": "Held"
+        }
+      ]
+    },
+    {
+      "id": "ORD-10005",
+      "customer": "Fabrikam Industrial",
+      "poNumber": "PO-55209",
+      "allocationStatus": "Allocated",
+      "shipmentIds": [
+        "SHP-00006"
+      ],
+      "lines": [
+        {
+          "sku": "FAB-SPARES",
+          "description": "Industrial spare parts",
+          "quantity": 48,
+          "status": "Allocated"
+        }
+      ]
+    },
+    {
+      "id": "ORD-10006",
+      "customer": "Wingtip Pharma",
+      "poNumber": "PO-44881",
+      "allocationStatus": "Dock Hold",
+      "shipmentIds": [
+        "SHP-00007"
+      ],
+      "lines": [
+        {
+          "sku": "WIN-PHARMA-A",
+          "description": "Pharmaceutical batch A",
+          "quantity": 75,
+          "status": "Allocated"
+        },
+        {
+          "sku": "WIN-PHARMA-B",
+          "description": "Pharmaceutical batch B",
+          "quantity": 42,
+          "status": "Quality Hold"
+        }
+      ]
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "VEH-0002",
+      "type": "Van",
+      "driver": "A. Silva",
+      "status": "In Transit",
+      "speed": 45,
+      "hoursRemaining": 10,
+      "dutyState": "Driving",
+      "telemetry": "2026-08-19T14:15:00+05:30",
+      "utilization": 59,
+      "fuelLevel": 74,
+      "chargeLevel": null,
+      "engineFaults": [],
+      "temperature": null,
+      "depot": "London Depot",
+      "region": "Europe"
+    },
+    {
+      "id": "VEH-0005",
+      "type": "Truck",
+      "driver": "R. Singh",
+      "status": "In Transit",
+      "speed": 68,
+      "hoursRemaining": 5.8,
+      "dutyState": "Driving",
+      "telemetry": "2026-08-19T14:15:00+05:30",
+      "utilization": 40,
+      "fuelLevel": 52,
+      "chargeLevel": null,
+      "engineFaults": [],
+      "temperature": null,
+      "depot": "Colombo Consolidation Centre",
+      "region": "APAC"
+    },
+    {
+      "id": "VEH-0008",
+      "type": "Tractor",
+      "driver": "J. Novak",
+      "status": "In Transit",
+      "speed": 93,
+      "hoursRemaining": 4.6,
+      "dutyState": "Driving",
+      "telemetry": "2026-08-19T14:15:00+05:30",
+      "utilization": 52,
+      "fuelLevel": 66,
+      "chargeLevel": null,
+      "engineFaults": [
+        "ABS sensor intermittent"
+      ],
+      "temperature": null,
+      "depot": "Rotterdam Cross-Dock",
+      "region": "Europe"
+    },
+    {
+      "id": "VEH-0011",
+      "type": "Reefer",
+      "driver": "M. Carter",
+      "status": "Maintenance",
+      "speed": 0,
+      "hoursRemaining": 5.7,
+      "dutyState": "Off Duty",
+      "telemetry": "2026-08-19T13:55:00+05:30",
+      "utilization": 62,
+      "fuelLevel": 48,
+      "chargeLevel": null,
+      "engineFaults": [
+        "Engine fault P0420"
+      ],
+      "temperature": 9.8,
+      "depot": "Dallas Service Bay",
+      "region": "Americas"
+    },
+    {
+      "id": "VEH-0019",
+      "type": "Van",
+      "driver": "K. Patel",
+      "status": "Delayed",
+      "speed": 26,
+      "hoursRemaining": 3.4,
+      "dutyState": "On Duty",
+      "telemetry": "2026-08-19T13:42:00+05:30",
+      "utilization": 74,
+      "fuelLevel": 31,
+      "chargeLevel": null,
+      "engineFaults": [],
+      "temperature": null,
+      "depot": "Singapore Regional Hub",
+      "region": "APAC"
+    },
+    {
+      "id": "VEH-0022",
+      "type": "Truck",
+      "driver": "N. Gomez",
+      "status": "Loading",
+      "speed": 0,
+      "hoursRemaining": 7.2,
+      "dutyState": "On Duty",
+      "telemetry": "2026-08-19T14:10:00+05:30",
+      "utilization": 82,
+      "fuelLevel": 58,
+      "chargeLevel": null,
+      "engineFaults": [],
+      "temperature": null,
+      "depot": "Chicago Terminal",
+      "region": "Americas"
+    },
+    {
+      "id": "VEH-0028",
+      "type": "Reefer",
+      "driver": "S. Tanaka",
+      "status": "In Transit",
+      "speed": 61,
+      "hoursRemaining": 1.4,
+      "dutyState": "Driving",
+      "telemetry": "2026-08-19T14:12:00+05:30",
+      "utilization": 69,
+      "fuelLevel": 44,
+      "chargeLevel": null,
+      "engineFaults": [],
+      "temperature": 3.2,
+      "depot": "Tokyo Cold Chain Hub",
+      "region": "APAC"
+    },
+    {
+      "id": "VEH-0031",
+      "type": "Van",
+      "driver": "L. Meyer",
+      "status": "Offline",
+      "speed": 0,
+      "hoursRemaining": 6.5,
+      "dutyState": "Sleeper Berth",
+      "telemetry": "2026-08-19T12:55:00+05:30",
+      "utilization": 28,
+      "fuelLevel": 21,
+      "chargeLevel": 18,
+      "engineFaults": [
+        "Low battery voltage"
+      ],
+      "temperature": null,
+      "depot": "Hamburg Yard",
+      "region": "Europe"
+    },
+    {
+      "id": "VEH-0034",
+      "type": "Truck",
+      "driver": "P. Johnson",
+      "status": "Idle",
+      "speed": 0,
+      "hoursRemaining": 2.2,
+      "dutyState": "On Duty",
+      "telemetry": "2026-08-19T14:05:00+05:30",
+      "utilization": 35,
+      "fuelLevel": 63,
+      "chargeLevel": null,
+      "engineFaults": [],
+      "temperature": null,
+      "depot": "Paris Depot",
+      "region": "Europe"
+    }
+  ],
+  "routePlans": [
+    {
+      "id": "RTE-0005",
+      "shipmentId": "SHP-00005",
+      "vehicleId": "VEH-0011",
+      "carrier": "OceanBridge",
+      "origin": "Toronto",
+      "destination": "Los Angeles",
+      "region": "Americas",
+      "status": "Disrupted",
+      "disruption": "Vehicle breakdown and congestion on the planned rail handoff corridor.",
+      "plannedRoute": {
+        "id": "RTE-0005-PLN",
+        "label": "Planned rail handoff",
+        "type": "Planned",
+        "etaImpactMinutes": 145,
+        "costImpactUsd": 0,
+        "confidence": 62,
+        "risk": "High",
+        "recommended": false,
+        "stops": [
+          {
+            "id": "RTE-0005-S1",
+            "name": "Toronto Gateway",
+            "type": "Origin",
+            "city": "Toronto",
+            "facilityCode": "TOR-GWY",
+            "plannedArrival": "2026-08-19T07:15:00+05:30",
+            "estimatedArrival": "2026-08-19T07:15:00+05:30",
+            "status": "Complete"
+          },
+          {
+            "id": "RTE-0005-S2",
+            "name": "Chicago Rail Terminal",
+            "type": "Stop",
+            "city": "Chicago",
+            "facilityCode": "CHI-RAIL",
+            "plannedArrival": "2026-08-19T12:30:00+05:30",
+            "estimatedArrival": "2026-08-19T14:45:00+05:30",
+            "status": "Blocked"
+          },
+          {
+            "id": "RTE-0005-S3",
+            "name": "Los Angeles DC",
+            "type": "Destination",
+            "city": "Los Angeles",
+            "facilityCode": "LAX-DC",
+            "plannedArrival": "2026-08-19T17:00:00+05:30",
+            "estimatedArrival": "2026-08-19T19:25:00+05:30",
+            "status": "Pending"
+          }
+        ],
+        "legs": [
+          {
+            "id": "RTE-0005-L1",
+            "from": "Toronto Gateway",
+            "to": "Chicago Rail Terminal",
+            "mode": "Road",
+            "distanceKm": 825,
+            "plannedMinutes": 390,
+            "estimatedMinutes": 505,
+            "status": "Blocked"
+          },
+          {
+            "id": "RTE-0005-L2",
+            "from": "Chicago Rail Terminal",
+            "to": "Los Angeles DC",
+            "mode": "Rail",
+            "distanceKm": 2810,
+            "plannedMinutes": 870,
+            "estimatedMinutes": 900,
+            "status": "Delayed"
+          }
+        ]
+      },
+      "candidateRoutes": [
+        {
+          "id": "RTE-0005-R1",
+          "label": "Southwest bypass via Phoenix",
+          "type": "Reroute",
+          "etaImpactMinutes": 35,
+          "costImpactUsd": 1850,
+          "confidence": 86,
+          "risk": "Medium",
+          "recommended": true,
+          "stops": [
+            {
+              "id": "RTE-0005-R1-S1",
+              "name": "Toronto Gateway",
+              "type": "Origin",
+              "city": "Toronto",
+              "facilityCode": "TOR-GWY",
+              "plannedArrival": "2026-08-19T07:15:00+05:30",
+              "estimatedArrival": "2026-08-19T07:15:00+05:30",
+              "status": "Complete"
+            },
+            {
+              "id": "RTE-0005-R1-S2",
+              "name": "Phoenix Crossdock",
+              "type": "Stop",
+              "city": "Phoenix",
+              "facilityCode": "PHX-XD",
+              "plannedArrival": "2026-08-19T15:40:00+05:30",
+              "estimatedArrival": "2026-08-19T15:55:00+05:30",
+              "status": "Pending"
+            },
+            {
+              "id": "RTE-0005-R1-S3",
+              "name": "Los Angeles DC",
+              "type": "Destination",
+              "city": "Los Angeles",
+              "facilityCode": "LAX-DC",
+              "plannedArrival": "2026-08-19T17:00:00+05:30",
+              "estimatedArrival": "2026-08-19T17:35:00+05:30",
+              "status": "Pending"
+            }
+          ],
+          "legs": [
+            {
+              "id": "RTE-0005-R1-L1",
+              "from": "Toronto Gateway",
+              "to": "Phoenix Crossdock",
+              "mode": "Road",
+              "distanceKm": 3050,
+              "plannedMinutes": 760,
+              "estimatedMinutes": 790,
+              "status": "On Track"
+            },
+            {
+              "id": "RTE-0005-R1-L2",
+              "from": "Phoenix Crossdock",
+              "to": "Los Angeles DC",
+              "mode": "Road",
+              "distanceKm": 595,
+              "plannedMinutes": 270,
+              "estimatedMinutes": 280,
+              "status": "On Track"
+            }
+          ]
+        },
+        {
+          "id": "RTE-0005-R2",
+          "label": "Air recovery from Chicago",
+          "type": "Reroute",
+          "etaImpactMinutes": -55,
+          "costImpactUsd": 5900,
+          "confidence": 78,
+          "risk": "Low",
+          "recommended": false,
+          "stops": [
+            {
+              "id": "RTE-0005-R2-S1",
+              "name": "Toronto Gateway",
+              "type": "Origin",
+              "city": "Toronto",
+              "facilityCode": "TOR-GWY",
+              "plannedArrival": "2026-08-19T07:15:00+05:30",
+              "estimatedArrival": "2026-08-19T07:15:00+05:30",
+              "status": "Complete"
+            },
+            {
+              "id": "RTE-0005-R2-S2",
+              "name": "Chicago Air Ramp",
+              "type": "Stop",
+              "city": "Chicago",
+              "facilityCode": "ORD-AIR",
+              "plannedArrival": "2026-08-19T12:20:00+05:30",
+              "estimatedArrival": "2026-08-19T12:40:00+05:30",
+              "status": "Pending"
+            },
+            {
+              "id": "RTE-0005-R2-S3",
+              "name": "Los Angeles DC",
+              "type": "Destination",
+              "city": "Los Angeles",
+              "facilityCode": "LAX-DC",
+              "plannedArrival": "2026-08-19T17:00:00+05:30",
+              "estimatedArrival": "2026-08-19T16:05:00+05:30",
+              "status": "Pending"
+            }
+          ],
+          "legs": [
+            {
+              "id": "RTE-0005-R2-L1",
+              "from": "Toronto Gateway",
+              "to": "Chicago Air Ramp",
+              "mode": "Road",
+              "distanceKm": 825,
+              "plannedMinutes": 390,
+              "estimatedMinutes": 410,
+              "status": "Delayed"
+            },
+            {
+              "id": "RTE-0005-R2-L2",
+              "from": "Chicago Air Ramp",
+              "to": "Los Angeles DC",
+              "mode": "Air",
+              "distanceKm": 2805,
+              "plannedMinutes": 245,
+              "estimatedMinutes": 230,
+              "status": "On Track"
+            }
+          ]
+        }
+      ],
+      "conflicts": [
+        {
+          "id": "CNF-0005",
+          "vehicleId": "VEH-0011",
+          "shipmentIds": [
+            "SHP-00005",
+            "SHP-00004"
+          ],
+          "windowStart": "2026-08-19T13:30:00+05:30",
+          "windowEnd": "2026-08-19T17:15:00+05:30",
+          "severity": "High",
+          "reason": "Two loads assigned to VEH-0011 during overlapping recovery windows."
+        }
+      ]
+    },
+    {
+      "id": "RTE-0007",
+      "shipmentId": "SHP-00007",
+      "vehicleId": "VEH-0019",
+      "carrier": "BlueLine Logistics",
+      "origin": "Hamburg",
+      "destination": "Singapore",
+      "region": "APAC",
+      "status": "Disrupted",
+      "disruption": "Dwell at Singapore Regional Hub is trending beyond the promised handoff window.",
+      "plannedRoute": {
+        "id": "RTE-0007-PLN",
+        "label": "Planned ocean corridor",
+        "type": "Planned",
+        "etaImpactMinutes": 70,
+        "costImpactUsd": 0,
+        "confidence": 69,
+        "risk": "Medium",
+        "recommended": false,
+        "stops": [
+          {
+            "id": "RTE-0007-S1",
+            "name": "Hamburg Port",
+            "type": "Origin",
+            "city": "Hamburg",
+            "facilityCode": "HAM-PORT",
+            "plannedArrival": "2026-08-19T08:00:00+05:30",
+            "estimatedArrival": "2026-08-19T08:00:00+05:30",
+            "status": "Complete"
+          },
+          {
+            "id": "RTE-0007-S2",
+            "name": "Singapore Regional Hub",
+            "type": "Stop",
+            "city": "Singapore",
+            "facilityCode": "SIN-HUB",
+            "plannedArrival": "2026-08-19T15:30:00+05:30",
+            "estimatedArrival": "2026-08-19T16:40:00+05:30",
+            "status": "Current"
+          },
+          {
+            "id": "RTE-0007-S3",
+            "name": "Jurong Pharma DC",
+            "type": "Destination",
+            "city": "Singapore",
+            "facilityCode": "JUR-DC",
+            "plannedArrival": "2026-08-19T18:00:00+05:30",
+            "estimatedArrival": "2026-08-19T19:10:00+05:30",
+            "status": "Pending"
+          }
+        ],
+        "legs": [
+          {
+            "id": "RTE-0007-L1",
+            "from": "Hamburg Port",
+            "to": "Singapore Regional Hub",
+            "mode": "Ocean",
+            "distanceKm": 10250,
+            "plannedMinutes": 840,
+            "estimatedMinutes": 895,
+            "status": "Delayed"
+          },
+          {
+            "id": "RTE-0007-L2",
+            "from": "Singapore Regional Hub",
+            "to": "Jurong Pharma DC",
+            "mode": "Road",
+            "distanceKm": 28,
+            "plannedMinutes": 70,
+            "estimatedMinutes": 85,
+            "status": "Delayed"
+          }
+        ]
+      },
+      "candidateRoutes": [
+        {
+          "id": "RTE-0007-R1",
+          "label": "Colombo bypass consolidation",
+          "type": "Reroute",
+          "etaImpactMinutes": 15,
+          "costImpactUsd": 1250,
+          "confidence": 82,
+          "risk": "Low",
+          "recommended": true,
+          "stops": [
+            {
+              "id": "RTE-0007-R1-S1",
+              "name": "Hamburg Port",
+              "type": "Origin",
+              "city": "Hamburg",
+              "facilityCode": "HAM-PORT",
+              "plannedArrival": "2026-08-19T08:00:00+05:30",
+              "estimatedArrival": "2026-08-19T08:00:00+05:30",
+              "status": "Complete"
+            },
+            {
+              "id": "RTE-0007-R1-S2",
+              "name": "Colombo Consolidation Centre",
+              "type": "Stop",
+              "city": "Colombo",
+              "facilityCode": "CMB-CC",
+              "plannedArrival": "2026-08-19T14:20:00+05:30",
+              "estimatedArrival": "2026-08-19T14:35:00+05:30",
+              "status": "Pending"
+            },
+            {
+              "id": "RTE-0007-R1-S3",
+              "name": "Jurong Pharma DC",
+              "type": "Destination",
+              "city": "Singapore",
+              "facilityCode": "JUR-DC",
+              "plannedArrival": "2026-08-19T18:00:00+05:30",
+              "estimatedArrival": "2026-08-19T18:15:00+05:30",
+              "status": "Pending"
+            }
+          ],
+          "legs": [
+            {
+              "id": "RTE-0007-R1-L1",
+              "from": "Hamburg Port",
+              "to": "Colombo Consolidation Centre",
+              "mode": "Ocean",
+              "distanceKm": 8260,
+              "plannedMinutes": 650,
+              "estimatedMinutes": 665,
+              "status": "On Track"
+            },
+            {
+              "id": "RTE-0007-R1-L2",
+              "from": "Colombo Consolidation Centre",
+              "to": "Jurong Pharma DC",
+              "mode": "Ocean + Road",
+              "distanceKm": 2740,
+              "plannedMinutes": 245,
+              "estimatedMinutes": 250,
+              "status": "On Track"
+            }
+          ]
+        },
+        {
+          "id": "RTE-0007-R2",
+          "label": "Priority drayage slot",
+          "type": "Reroute",
+          "etaImpactMinutes": -20,
+          "costImpactUsd": 2450,
+          "confidence": 74,
+          "risk": "Medium",
+          "recommended": false,
+          "stops": [
+            {
+              "id": "RTE-0007-R2-S1",
+              "name": "Hamburg Port",
+              "type": "Origin",
+              "city": "Hamburg",
+              "facilityCode": "HAM-PORT",
+              "plannedArrival": "2026-08-19T08:00:00+05:30",
+              "estimatedArrival": "2026-08-19T08:00:00+05:30",
+              "status": "Complete"
+            },
+            {
+              "id": "RTE-0007-R2-S2",
+              "name": "Singapore Priority Gate",
+              "type": "Stop",
+              "city": "Singapore",
+              "facilityCode": "SIN-PRI",
+              "plannedArrival": "2026-08-19T15:30:00+05:30",
+              "estimatedArrival": "2026-08-19T15:55:00+05:30",
+              "status": "Pending"
+            },
+            {
+              "id": "RTE-0007-R2-S3",
+              "name": "Jurong Pharma DC",
+              "type": "Destination",
+              "city": "Singapore",
+              "facilityCode": "JUR-DC",
+              "plannedArrival": "2026-08-19T18:00:00+05:30",
+              "estimatedArrival": "2026-08-19T17:40:00+05:30",
+              "status": "Pending"
+            }
+          ],
+          "legs": [
+            {
+              "id": "RTE-0007-R2-L1",
+              "from": "Hamburg Port",
+              "to": "Singapore Priority Gate",
+              "mode": "Ocean",
+              "distanceKm": 10250,
+              "plannedMinutes": 840,
+              "estimatedMinutes": 865,
+              "status": "Delayed"
+            },
+            {
+              "id": "RTE-0007-R2-L2",
+              "from": "Singapore Priority Gate",
+              "to": "Jurong Pharma DC",
+              "mode": "Road",
+              "distanceKm": 31,
+              "plannedMinutes": 50,
+              "estimatedMinutes": 45,
+              "status": "On Track"
+            }
+          ]
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "id": "RTE-0009",
+      "shipmentId": "SHP-00009",
+      "vehicleId": "VEH-0031",
+      "carrier": "Atlas Cargo",
+      "origin": "Prague",
+      "destination": "Rotterdam",
+      "region": "Europe",
+      "status": "Conflict",
+      "disruption": "Weather corridor and vehicle assignment conflict on the outbound window.",
+      "plannedRoute": {
+        "id": "RTE-0009-PLN",
+        "label": "Benelux corridor",
+        "type": "Planned",
+        "etaImpactMinutes": 95,
+        "costImpactUsd": 0,
+        "confidence": 58,
+        "risk": "High",
+        "recommended": false,
+        "stops": [
+          {
+            "id": "RTE-0009-S1",
+            "name": "Prague Depot",
+            "type": "Origin",
+            "city": "Prague",
+            "facilityCode": "PRG-DEP",
+            "plannedArrival": "2026-08-19T09:30:00+05:30",
+            "estimatedArrival": "2026-08-19T09:30:00+05:30",
+            "status": "Complete"
+          },
+          {
+            "id": "RTE-0009-S2",
+            "name": "Cologne Relay",
+            "type": "Stop",
+            "city": "Cologne",
+            "facilityCode": "CGN-RLY",
+            "plannedArrival": "2026-08-19T13:10:00+05:30",
+            "estimatedArrival": "2026-08-19T14:05:00+05:30",
+            "status": "Current"
+          },
+          {
+            "id": "RTE-0009-S3",
+            "name": "Rotterdam DC",
+            "type": "Destination",
+            "city": "Rotterdam",
+            "facilityCode": "RTM-DC",
+            "plannedArrival": "2026-08-19T17:45:00+05:30",
+            "estimatedArrival": "2026-08-19T19:20:00+05:30",
+            "status": "Pending"
+          }
+        ],
+        "legs": [
+          {
+            "id": "RTE-0009-L1",
+            "from": "Prague Depot",
+            "to": "Cologne Relay",
+            "mode": "Road",
+            "distanceKm": 690,
+            "plannedMinutes": 310,
+            "estimatedMinutes": 365,
+            "status": "Delayed"
+          },
+          {
+            "id": "RTE-0009-L2",
+            "from": "Cologne Relay",
+            "to": "Rotterdam DC",
+            "mode": "Road",
+            "distanceKm": 260,
+            "plannedMinutes": 180,
+            "estimatedMinutes": 220,
+            "status": "Delayed"
+          }
+        ]
+      },
+      "candidateRoutes": [
+        {
+          "id": "RTE-0009-R1",
+          "label": "Night run via Brussels",
+          "type": "Reroute",
+          "etaImpactMinutes": 25,
+          "costImpactUsd": 920,
+          "confidence": 81,
+          "risk": "Medium",
+          "recommended": true,
+          "stops": [
+            {
+              "id": "RTE-0009-R1-S1",
+              "name": "Prague Depot",
+              "type": "Origin",
+              "city": "Prague",
+              "facilityCode": "PRG-DEP",
+              "plannedArrival": "2026-08-19T09:30:00+05:30",
+              "estimatedArrival": "2026-08-19T09:30:00+05:30",
+              "status": "Complete"
+            },
+            {
+              "id": "RTE-0009-R1-S2",
+              "name": "Brussels Relay",
+              "type": "Stop",
+              "city": "Brussels",
+              "facilityCode": "BRU-RLY",
+              "plannedArrival": "2026-08-19T14:20:00+05:30",
+              "estimatedArrival": "2026-08-19T14:40:00+05:30",
+              "status": "Pending"
+            },
+            {
+              "id": "RTE-0009-R1-S3",
+              "name": "Rotterdam DC",
+              "type": "Destination",
+              "city": "Rotterdam",
+              "facilityCode": "RTM-DC",
+              "plannedArrival": "2026-08-19T17:45:00+05:30",
+              "estimatedArrival": "2026-08-19T18:10:00+05:30",
+              "status": "Pending"
+            }
+          ],
+          "legs": [
+            {
+              "id": "RTE-0009-R1-L1",
+              "from": "Prague Depot",
+              "to": "Brussels Relay",
+              "mode": "Road",
+              "distanceKm": 900,
+              "plannedMinutes": 430,
+              "estimatedMinutes": 455,
+              "status": "On Track"
+            },
+            {
+              "id": "RTE-0009-R1-L2",
+              "from": "Brussels Relay",
+              "to": "Rotterdam DC",
+              "mode": "Road",
+              "distanceKm": 155,
+              "plannedMinutes": 115,
+              "estimatedMinutes": 115,
+              "status": "On Track"
+            }
+          ]
+        },
+        {
+          "id": "RTE-0009-R2",
+          "label": "Rail transfer via Duisburg",
+          "type": "Reroute",
+          "etaImpactMinutes": 50,
+          "costImpactUsd": -340,
+          "confidence": 76,
+          "risk": "Medium",
+          "recommended": false,
+          "stops": [
+            {
+              "id": "RTE-0009-R2-S1",
+              "name": "Prague Depot",
+              "type": "Origin",
+              "city": "Prague",
+              "facilityCode": "PRG-DEP",
+              "plannedArrival": "2026-08-19T09:30:00+05:30",
+              "estimatedArrival": "2026-08-19T09:30:00+05:30",
+              "status": "Complete"
+            },
+            {
+              "id": "RTE-0009-R2-S2",
+              "name": "Duisburg Intermodal",
+              "type": "Stop",
+              "city": "Duisburg",
+              "facilityCode": "DUI-IM",
+              "plannedArrival": "2026-08-19T15:00:00+05:30",
+              "estimatedArrival": "2026-08-19T15:45:00+05:30",
+              "status": "Pending"
+            },
+            {
+              "id": "RTE-0009-R2-S3",
+              "name": "Rotterdam DC",
+              "type": "Destination",
+              "city": "Rotterdam",
+              "facilityCode": "RTM-DC",
+              "plannedArrival": "2026-08-19T17:45:00+05:30",
+              "estimatedArrival": "2026-08-19T18:35:00+05:30",
+              "status": "Pending"
+            }
+          ],
+          "legs": [
+            {
+              "id": "RTE-0009-R2-L1",
+              "from": "Prague Depot",
+              "to": "Duisburg Intermodal",
+              "mode": "Road",
+              "distanceKm": 715,
+              "plannedMinutes": 355,
+              "estimatedMinutes": 400,
+              "status": "Delayed"
+            },
+            {
+              "id": "RTE-0009-R2-L2",
+              "from": "Duisburg Intermodal",
+              "to": "Rotterdam DC",
+              "mode": "Rail",
+              "distanceKm": 210,
+              "plannedMinutes": 110,
+              "estimatedMinutes": 105,
+              "status": "On Track"
+            }
+          ]
+        }
+      ],
+      "conflicts": [
+        {
+          "id": "CNF-0009",
+          "vehicleId": "VEH-0031",
+          "shipmentIds": [
+            "SHP-00009",
+            "SHP-00006"
+          ],
+          "windowStart": "2026-08-19T14:00:00+05:30",
+          "windowEnd": "2026-08-19T18:30:00+05:30",
+          "severity": "Critical",
+          "reason": "VEH-0031 is still assigned to SHP-00006 during the proposed Rotterdam recovery window."
+        }
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "EXC-0003",
+      "title": "Dwell Breach",
+      "category": "Dwell",
+      "domain": "Facilities",
+      "severity": "Low",
+      "status": "New",
+      "description": "Asset dwell time exceeded the facility threshold.",
+      "shipmentId": "SHP-00007",
+      "timestamp": "2026-08-19T09:49:36+05:30",
+      "assignee": "Unassigned"
+    },
+    {
+      "id": "EXC-0006",
+      "title": "ETA Slippage",
+      "category": "Delay",
+      "domain": "Shipments",
+      "severity": "Medium",
+      "status": "Acknowledged",
+      "description": "Estimated arrival has slipped beyond the committed delivery window.",
+      "shipmentId": "SHP-00009",
+      "timestamp": "2026-08-19T09:13:36+05:30",
+      "assignee": "Demo Dispatcher"
+    },
+    {
+      "id": "EXC-0009",
+      "title": "Vehicle Breakdown",
+      "category": "Breakdown",
+      "domain": "Fleet",
+      "severity": "High",
+      "status": "New",
+      "description": "Vehicle reported a critical mechanical fault.",
+      "shipmentId": "SHP-00005",
+      "timestamp": "2026-08-19T08:37:36+05:30",
+      "assignee": "Unassigned"
+    },
+    {
+      "id": "EXC-0012",
+      "title": "Temperature Excursion",
+      "category": "Temperature",
+      "domain": "Fleet",
+      "severity": "Critical",
+      "status": "In Progress",
+      "description": "Reefer temperature is outside the configured safe range.",
+      "shipmentId": "SHP-00003",
+      "timestamp": "2026-08-19T08:01:36+05:30",
+      "assignee": "N. Gomez"
+    },
+    {
+      "id": "EXC-0015",
+      "title": "Missed Scan",
+      "category": "Missed scan",
+      "domain": "Shipments",
+      "severity": "Medium",
+      "status": "In Progress",
+      "description": "Container has missed the required transfer scan at the relay facility.",
+      "shipmentId": "SHP-00007",
+      "timestamp": "2026-08-19T10:22:36+05:30",
+      "assignee": "N. Gomez"
+    },
+    {
+      "id": "EXC-0018",
+      "title": "Geofence Violation",
+      "category": "Geofence",
+      "domain": "Map",
+      "severity": "Critical",
+      "status": "In Progress",
+      "description": "Asset entered a restricted yard boundary outside the approved corridor.",
+      "shipmentId": "SHP-00005",
+      "timestamp": "2026-08-19T10:41:36+05:30",
+      "assignee": "Demo Dispatcher"
+    }
+  ],
+  "facilities": [
+    {
+      "id": "FAC-05",
+      "code": "FAC-05",
+      "name": "Singapore Regional Hub",
+      "region": "APAC",
+      "status": "Constrained",
+      "dockUtilization": 84,
+      "inboundQueue": 18,
+      "outboundQueue": 16,
+      "averageDwell": 55,
+      "activeDoors": 12,
+      "staffing": "Constrained",
+      "affectedShipments": 42,
+      "inboundLoads": 31,
+      "outboundLoads": 28,
+      "events": [
+        {
+          "id": "FEV-0501",
+          "type": "Congestion",
+          "severity": "High",
+          "status": "Open",
+          "description": "Inbound drayage queue is exceeding yard staging capacity.",
+          "affectedShipments": [
+            "SHP-00007",
+            "SHP-00003"
+          ],
+          "inboundLoads": 18,
+          "outboundLoads": 9,
+          "timestamp": "2026-08-19T10:25:00+05:30"
+        },
+        {
+          "id": "FEV-0502",
+          "type": "Dock outage",
+          "severity": "Medium",
+          "status": "Monitoring",
+          "description": "Door 12 is unavailable for reefer unloading.",
+          "affectedShipments": [
+            "SHP-00007"
+          ],
+          "inboundLoads": 4,
+          "outboundLoads": 2,
+          "timestamp": "2026-08-19T09:45:00+05:30"
+        }
+      ],
+      "appointments": [
+        {
+          "id": "APT-0501",
+          "shipmentId": "SHP-00007",
+          "carrier": "BlueLine Logistics",
+          "trailerId": "TRL-00007",
+          "appointmentTime": "2026-08-19T15:30:00+05:30",
+          "yardStatus": "In Yard",
+          "door": "D-08"
+        },
+        {
+          "id": "APT-0502",
+          "shipmentId": "SHP-00003",
+          "carrier": "Atlas Cargo",
+          "trailerId": "CONT-000003",
+          "appointmentTime": "2026-08-19T16:15:00+05:30",
+          "yardStatus": "Late",
+          "door": "D-12"
+        }
+      ]
+    },
+    {
+      "id": "FAC-06",
+      "code": "FAC-06",
+      "name": "Colombo Consolidation Centre",
+      "region": "APAC",
+      "status": "Normal",
+      "dockUtilization": 62,
+      "inboundQueue": 8,
+      "outboundQueue": 7,
+      "averageDwell": 31,
+      "activeDoors": 9,
+      "staffing": "Normal",
+      "affectedShipments": 6,
+      "inboundLoads": 12,
+      "outboundLoads": 14,
+      "events": [
+        {
+          "id": "FEV-0601",
+          "type": "Yard hold",
+          "severity": "Low",
+          "status": "Monitoring",
+          "description": "Two containers awaiting customs release before outbound dispatch.",
+          "affectedShipments": [
+            "SHP-00003"
+          ],
+          "inboundLoads": 2,
+          "outboundLoads": 1,
+          "timestamp": "2026-08-19T11:10:00+05:30"
+        }
+      ],
+      "appointments": [
+        {
+          "id": "APT-0601",
+          "shipmentId": "SHP-00003",
+          "carrier": "Atlas Cargo",
+          "trailerId": "CONT-000003",
+          "appointmentTime": "2026-08-19T14:35:00+05:30",
+          "yardStatus": "Scheduled",
+          "door": "C-02"
+        }
+      ]
+    },
+    {
+      "id": "FAC-07",
+      "code": "FAC-07",
+      "name": "Dubai Distribution Hub",
+      "region": "APAC",
+      "status": "Normal",
+      "dockUtilization": 71,
+      "inboundQueue": 12,
+      "outboundQueue": 10,
+      "averageDwell": 42,
+      "activeDoors": 15,
+      "staffing": "Normal",
+      "affectedShipments": 11,
+      "inboundLoads": 16,
+      "outboundLoads": 18,
+      "events": [],
+      "appointments": [
+        {
+          "id": "APT-0701",
+          "shipmentId": "SHP-00003",
+          "carrier": "Atlas Cargo",
+          "trailerId": "CONT-000003",
+          "appointmentTime": "2026-08-19T18:20:00+05:30",
+          "yardStatus": "Scheduled",
+          "door": "B-04"
+        }
+      ]
+    },
+    {
+      "id": "FAC-08",
+      "code": "FAC-08",
+      "name": "Mumbai Sorting Centre",
+      "region": "APAC",
+      "status": "Constrained",
+      "dockUtilization": 88,
+      "inboundQueue": 22,
+      "outboundQueue": 19,
+      "averageDwell": 67,
+      "activeDoors": 10,
+      "staffing": "Constrained",
+      "affectedShipments": 58,
+      "inboundLoads": 36,
+      "outboundLoads": 32,
+      "events": [
+        {
+          "id": "FEV-0801",
+          "type": "Staffing gap",
+          "severity": "High",
+          "status": "Open",
+          "description": "Outbound sort wave is short two forklift operators.",
+          "affectedShipments": [
+            "SHP-00003",
+            "SHP-00007"
+          ],
+          "inboundLoads": 8,
+          "outboundLoads": 16,
+          "timestamp": "2026-08-19T10:55:00+05:30"
+        }
+      ],
+      "appointments": [
+        {
+          "id": "APT-0801",
+          "shipmentId": "SHP-00007",
+          "carrier": "BlueLine Logistics",
+          "trailerId": "TRL-00007",
+          "appointmentTime": "2026-08-19T17:05:00+05:30",
+          "yardStatus": "At Door",
+          "door": "M-10"
+        }
+      ]
+    },
+    {
+      "id": "FAC-09",
+      "code": "FAC-09",
+      "name": "Rotterdam DC",
+      "region": "Europe",
+      "status": "Constrained",
+      "dockUtilization": 86,
+      "inboundQueue": 17,
+      "outboundQueue": 14,
+      "averageDwell": 61,
+      "activeDoors": 11,
+      "staffing": "Normal",
+      "affectedShipments": 24,
+      "inboundLoads": 21,
+      "outboundLoads": 19,
+      "events": [
+        {
+          "id": "FEV-0901",
+          "type": "Congestion",
+          "severity": "High",
+          "status": "Open",
+          "description": "Weather recovery freight is compressing inbound receiving windows.",
+          "affectedShipments": [
+            "SHP-00009",
+            "SHP-00006"
+          ],
+          "inboundLoads": 11,
+          "outboundLoads": 7,
+          "timestamp": "2026-08-19T09:35:00+05:30"
+        }
+      ],
+      "appointments": [
+        {
+          "id": "APT-0901",
+          "shipmentId": "SHP-00009",
+          "carrier": "Atlas Cargo",
+          "trailerId": "TRL-00009",
+          "appointmentTime": "2026-08-19T18:10:00+05:30",
+          "yardStatus": "Late",
+          "door": "R-03"
+        },
+        {
+          "id": "APT-0902",
+          "shipmentId": "SHP-00006",
+          "carrier": "NorthStar Freight",
+          "trailerId": "TRL-00006",
+          "appointmentTime": "2026-08-19T15:20:00+05:30",
+          "yardStatus": "Arrived",
+          "door": "R-06"
+        }
+      ]
+    },
+    {
+      "id": "FAC-10",
+      "code": "FAC-10",
+      "name": "Chicago Terminal",
+      "region": "Americas",
+      "status": "Constrained",
+      "dockUtilization": 82,
+      "inboundQueue": 20,
+      "outboundQueue": 15,
+      "averageDwell": 58,
+      "activeDoors": 13,
+      "staffing": "Constrained",
+      "affectedShipments": 31,
+      "inboundLoads": 27,
+      "outboundLoads": 22,
+      "events": [
+        {
+          "id": "FEV-1001",
+          "type": "Dock outage",
+          "severity": "Critical",
+          "status": "Open",
+          "description": "Two high-volume doors are unavailable during the recovery window.",
+          "affectedShipments": [
+            "SHP-00005",
+            "SHP-00004"
+          ],
+          "inboundLoads": 12,
+          "outboundLoads": 10,
+          "timestamp": "2026-08-19T10:05:00+05:30"
+        }
+      ],
+      "appointments": [
+        {
+          "id": "APT-1001",
+          "shipmentId": "SHP-00005",
+          "carrier": "OceanBridge",
+          "trailerId": "TRL-00005",
+          "appointmentTime": "2026-08-19T14:45:00+05:30",
+          "yardStatus": "In Yard",
+          "door": "C-11"
+        },
+        {
+          "id": "APT-1002",
+          "shipmentId": "SHP-00004",
+          "carrier": "SwiftHaul",
+          "trailerId": "TRL-00004",
+          "appointmentTime": "2026-08-19T13:40:00+05:30",
+          "yardStatus": "At Door",
+          "door": "C-09"
+        }
+      ]
+    }
+  ],
+  "capacityForecasts": [
+    {
+      "id": "LANE-001",
+      "region": "Americas",
+      "horizonDays": 7,
+      "origin": "Chicago",
+      "destination": "Dallas",
+      "facility": "Chicago Terminal",
+      "facilityCode": "CHI-TRM",
+      "demand": 88,
+      "capacity": 72,
+      "trend": 16,
+      "direction": "down"
+    },
+    {
+      "id": "LANE-002",
+      "region": "Europe",
+      "horizonDays": 7,
+      "origin": "Rotterdam",
+      "destination": "Hamburg",
+      "facility": "Hamburg Yard",
+      "facilityCode": "HAM-YRD",
+      "demand": 64,
+      "capacity": 81,
+      "trend": 17,
+      "direction": "up"
+    },
+    {
+      "id": "LANE-003",
+      "region": "APAC",
+      "horizonDays": 7,
+      "origin": "Singapore",
+      "destination": "Colombo",
+      "facility": "Singapore Regional Hub",
+      "facilityCode": "SIN-HUB",
+      "demand": 91,
+      "capacity": 76,
+      "trend": 15,
+      "direction": "down"
+    },
+    {
+      "id": "LANE-004",
+      "region": "Americas",
+      "horizonDays": 14,
+      "origin": "Los Angeles",
+      "destination": "Toronto",
+      "facility": "Los Angeles DC",
+      "facilityCode": "LAX-DC",
+      "demand": 73,
+      "capacity": 78,
+      "trend": 5,
+      "direction": "up"
+    },
+    {
+      "id": "LANE-005",
+      "region": "Europe",
+      "horizonDays": 14,
+      "origin": "Prague",
+      "destination": "Rotterdam",
+      "facility": "Rotterdam DC",
+      "facilityCode": "RTM-DC",
+      "demand": 93,
+      "capacity": 68,
+      "trend": 25,
+      "direction": "down"
+    },
+    {
+      "id": "LANE-006",
+      "region": "Europe",
+      "horizonDays": 30,
+      "origin": "Paris",
+      "destination": "Lisbon",
+      "facility": "Paris Depot",
+      "facilityCode": "PAR-DEP",
+      "demand": 58,
+      "capacity": 79,
+      "trend": 21,
+      "direction": "up"
+    },
+    {
+      "id": "LANE-007",
+      "region": "APAC",
+      "horizonDays": 14,
+      "origin": "Tokyo",
+      "destination": "Singapore",
+      "facility": "Tokyo Cold Chain Hub",
+      "facilityCode": "TYO-COLD",
+      "demand": 82,
+      "capacity": 69,
+      "trend": 13,
+      "direction": "down"
+    },
+    {
+      "id": "LANE-008",
+      "region": "APAC",
+      "horizonDays": 30,
+      "origin": "Mumbai",
+      "destination": "Dubai",
+      "facility": "Mumbai Sorting Centre",
+      "facilityCode": "BOM-SORT",
+      "demand": 62,
+      "capacity": 88,
+      "trend": 26,
+      "direction": "up"
+    },
+    {
+      "id": "LANE-009",
+      "region": "Americas",
+      "horizonDays": 30,
+      "origin": "Toronto",
+      "destination": "Los Angeles",
+      "facility": "Toronto Gateway",
+      "facilityCode": "TOR-GWY",
+      "demand": 96,
+      "capacity": 74,
+      "trend": 22,
+      "direction": "down"
+    }
+  ],
+  "capacityScenarios": [
+    {
+      "id": "SCN-EU-01",
+      "region": "Europe",
+      "name": "Shift volume to rail via Duisburg",
+      "description": "Move overflow from Prague-Rotterdam road capacity into an intermodal rail transfer.",
+      "horizonDays": 14,
+      "reallocationLane": "Prague -> Rotterdam",
+      "addedCapacity": 18,
+      "projectedOtd": 96.1,
+      "costImpactUsd": 12400,
+      "atRiskReduction": 86,
+      "shortfallReduction": 17
+    },
+    {
+      "id": "SCN-EU-02",
+      "region": "Europe",
+      "name": "Add weekend Hamburg crossdock shift",
+      "description": "Extend dock labor coverage to raise outbound throughput on constrained European lanes.",
+      "horizonDays": 7,
+      "reallocationLane": "Rotterdam -> Hamburg",
+      "addedCapacity": 11,
+      "projectedOtd": 94.8,
+      "costImpactUsd": 7600,
+      "atRiskReduction": 42,
+      "shortfallReduction": 9
+    },
+    {
+      "id": "SCN-AM-01",
+      "region": "Americas",
+      "name": "Reallocate tractors from Dallas pool",
+      "description": "Move idle tractor capacity into Chicago-Dallas and Toronto-Los Angeles recovery lanes.",
+      "horizonDays": 7,
+      "reallocationLane": "Chicago -> Dallas",
+      "addedCapacity": 16,
+      "projectedOtd": 95.5,
+      "costImpactUsd": 18500,
+      "atRiskReduction": 134,
+      "shortfallReduction": 14
+    },
+    {
+      "id": "SCN-AM-02",
+      "region": "Americas",
+      "name": "Contract spot linehaul",
+      "description": "Buy short-term carrier capacity for the Toronto-Los Angeles corridor.",
+      "horizonDays": 30,
+      "reallocationLane": "Toronto -> Los Angeles",
+      "addedCapacity": 22,
+      "projectedOtd": 96.8,
+      "costImpactUsd": 31200,
+      "atRiskReduction": 118,
+      "shortfallReduction": 19
+    },
+    {
+      "id": "SCN-AP-01",
+      "region": "APAC",
+      "name": "Prioritize Singapore cold chain slots",
+      "description": "Reserve reefer dock doors for constrained Singapore-Colombo and Tokyo-Singapore flows.",
+      "horizonDays": 7,
+      "reallocationLane": "Singapore -> Colombo",
+      "addedCapacity": 15,
+      "projectedOtd": 95.9,
+      "costImpactUsd": 14200,
+      "atRiskReduction": 73,
+      "shortfallReduction": 12
+    },
+    {
+      "id": "SCN-AP-02",
+      "region": "APAC",
+      "name": "Move overflow through Dubai",
+      "description": "Route Mumbai outbound surplus through Dubai Distribution Hub to protect regional SLAs.",
+      "horizonDays": 30,
+      "reallocationLane": "Mumbai -> Dubai",
+      "addedCapacity": 10,
+      "projectedOtd": 94.2,
+      "costImpactUsd": 9800,
+      "atRiskReduction": 39,
+      "shortfallReduction": 8
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
